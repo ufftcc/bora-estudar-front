@@ -1,0 +1,50 @@
+<div class="container">
+  <mat-card>
+    <mat-card-title> Bora Estudar - UFF! </mat-card-title>
+
+    <mat-card-content>
+      <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input matInput formControlName="password" type="password" required />
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="form-button"
+          type="submit"
+        >
+          Login
+        </button>
+
+        <div class="linhaou">
+          <span class="linha"> </span>
+          <span class="ou">OU</span>
+          <span class="linha"> </span>
+        </div>
+
+        <a
+          mat-stroked-button
+          color="link"
+          class="form-button"
+          routerLink="/register"
+          >Cadastre-se</a
+        >
+
+        <a
+          mat-button
+          class="form-button"
+          color="primary"
+          routerLink="/password-recovery"
+          >Esqueceu a senha?</a
+        >
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

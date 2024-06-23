@@ -1,0 +1,28 @@
+.search_container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+}
+
+.search_row {
+  display: flex;
+  /* flex-wrap: wrap; */
+  height: 56px;
+  width: 100%;
+  gap: 1%;
+  /* justify-content: space-between; */
+}
+
+.search_row_search_bar {
+  height: 100%;
+  width: 70%;
+}
+
+.search_row_search_item {
+  height: 100%;
+  width: 15%;
+}
+
+.search_row_icon {
+  margin: 0px !important;
+}

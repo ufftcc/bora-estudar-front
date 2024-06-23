@@ -1,0 +1,37 @@
+<mat-toolbar color="primary">
+  <span>Filtrar</span>
+  <span class="spacer"></span>
+  <button mat-icon-button (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="filter-container">
+
+  <h2>Modalidade</h2>
+  <mat-form-field appearance="outline">
+    <mat-label>Modalidade</mat-label>
+    <mat-select multiple [(ngModel)]="selectedModality">
+      <mat-option *ngFor="let modality of modalities" [value]="modality.value">
+        {{ modality.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <h2>Dias</h2>
+  <mat-chip-listbox [(ngModel)]="selectedDays" multiple>
+    <mat-chip-option *ngFor="let day of daysOfWeek" [value]="day.id">
+      {{ day.name }}
+    </mat-chip-option>
+  </mat-chip-listbox>
+
+  <h2>Horário</h2>
+  <mat-form-field>
+    <mat-label>Horário inicial</mat-label>
+    <input matInput type="time" value="13:00" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="applyFilters()">
+    Aplicar
+  </button>
+</div>

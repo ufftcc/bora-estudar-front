@@ -1,0 +1,47 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  background-color: #fafafa;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 350px;
+  min-width: 300px;
+  padding: 20px 10px;
+}
+
+mat-card-title {
+  margin-bottom: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.form-button {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.linhaou {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0px 10px;
+  margin-bottom: 15px;
+}
+
+.linha {
+  width: 100%;
+  height: 2px;
+  background-color: rgb(196, 196, 196);
+}
+

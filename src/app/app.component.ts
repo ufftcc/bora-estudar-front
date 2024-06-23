@@ -1,10 +1,38 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { AuthService } from './core/security/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
   title = 'bora-estudar-front';
+  isLoggedIn = false;
+
+  constructor() {}
+
+  ngOnInit(): void {
+    console.log('App component');
+    this.authService.isLoggedIn().subscribe((isLoggedIn) => {
+      this.isLoggedIn = isLoggedIn;
+      this.cdr.detectChanges();
+    });
+  }
+
+  public logout() {
+    this.authService.logout().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.router.navigateByUrl('/login');
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
 }
