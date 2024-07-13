@@ -1,16 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StudyGroupFilterDialogComponent } from '../study-group-filter-dialog/study-group-filter-dialog.component';
 
 @Component({
-  selector: 'app-study-group-search',
+  selector: 'app-study-group-search-bar',
   // standalone: true,
   // imports: [],
-  templateUrl: './study-group-search.component.html',
-  styleUrl: './study-group-search.component.css',
+  templateUrl: './study-group-search-bar.component.html',
+  styleUrl: './study-group-search-bar.component.css',
 })
-export class StudyGroupSearchComponent {
-  constructor(private dialog: MatDialog) {}
+export class StudyGroupSearchBarComponent implements OnInit {
+  private dialog = inject(MatDialog);
+
+  constructor() {}
+
+  ngOnInit(): void {}
 
   openFilterDialog(): void {
     let dialogRef = this.dialog.open(StudyGroupFilterDialogComponent, {

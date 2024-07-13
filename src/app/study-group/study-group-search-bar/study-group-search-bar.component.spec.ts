@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StudyGroupSearchComponent } from './study-group-search.component';
+import { StudyGroupSearchBarComponent } from './study-group-search.component';
 
 describe('StudyGroupSearchComponent', () => {
-  let component: StudyGroupSearchComponent;
-  let fixture: ComponentFixture<StudyGroupSearchComponent>;
+  let component: StudyGroupSearchBarComponent;
+  let fixture: ComponentFixture<StudyGroupSearchBarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StudyGroupSearchComponent]
+      imports: [StudyGroupSearchBarComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(StudyGroupSearchComponent);
+
+    fixture = TestBed.createComponent(StudyGroupSearchBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
