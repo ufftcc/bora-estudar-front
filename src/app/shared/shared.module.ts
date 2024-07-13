@@ -4,9 +4,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { AngularMaterialModule } from '../angular-material.module';
 
 @NgModule({
-  declarations: [HeaderComponent],
-  imports: [CommonModule, AngularMaterialModule],
-  exports: [HeaderComponent],
+    imports: [CommonModule, AngularMaterialModule, HeaderComponent],
+    exports: [HeaderComponent],
 })
 export class SharedModule {
 }

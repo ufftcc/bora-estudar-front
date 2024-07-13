@@ -1,10 +1,25 @@
 import { Component } from '@angular/core';
+import { MatNavList, MatListItem } from '@angular/material/list';
+import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { MatToolbar } from '@angular/material/toolbar';
 
 @Component({
-  selector: 'app-header',
-  // standalone: true,
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css',
+    selector: 'app-header',
+    // standalone: true,
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.css',
+    standalone: true,
+    imports: [
+        MatToolbar,
+        MatIconButton,
+        MatIcon,
+        MatSidenavContainer,
+        MatSidenav,
+        MatNavList,
+        MatListItem,
+    ],
 })
 export class HeaderComponent {
 

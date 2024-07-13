@@ -1,12 +1,38 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatInput } from '@angular/material/input';
+import { MatChipListbox, MatChipOption } from '@angular/material/chips';
+import { MatOption } from '@angular/material/core';
+import { NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatSelect } from '@angular/material/select';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatToolbar } from '@angular/material/toolbar';
 
 @Component({
-  selector: 'app-study-group-filter-dialog',
-  // standalone: true,
-  // imports: [],
-  templateUrl: './study-group-filter-dialog.component.html',
-  styleUrl: './study-group-filter-dialog.component.css',
+    selector: 'app-study-group-filter-dialog',
+    // standalone: true,
+    // imports: [],
+    templateUrl: './study-group-filter-dialog.component.html',
+    styleUrl: './study-group-filter-dialog.component.css',
+    standalone: true,
+    imports: [
+        MatToolbar,
+        MatIconButton,
+        MatIcon,
+        MatFormField,
+        MatLabel,
+        MatSelect,
+        FormsModule,
+        NgFor,
+        MatOption,
+        MatChipListbox,
+        MatChipOption,
+        MatInput,
+        MatButton,
+    ],
 })
 export class StudyGroupFilterDialogComponent {
   protected daysOfWeek: { id: number; name: string }[] = [

@@ -1,12 +1,30 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { AuthService } from './core/security/auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { UserResponseBasicDto } from './shared/models/user/user-response-basic-dto';
+import { MatNavList, MatListItem } from '@angular/material/list';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { MatToolbar } from '@angular/material/toolbar';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
+    standalone: true,
+    imports: [
+        MatToolbar,
+        MatIconButton,
+        MatIcon,
+        MatSidenavContainer,
+        MatSidenav,
+        MatNavList,
+        MatListItem,
+        RouterLink,
+        MatSidenavContent,
+        RouterOutlet,
+    ],
 })
 export class AppComponent implements OnInit {
   private authService = inject(AuthService);

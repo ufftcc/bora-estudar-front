@@ -1,13 +1,27 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StudyGroupFilterDialogComponent } from '../study-group-filter-dialog/study-group-filter-dialog.component';
+import { StudyGroupSearchListComponent } from '../study-group-search-list/study-group-search-list.component';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-study-group-search-bar',
-  // standalone: true,
-  // imports: [],
-  templateUrl: './study-group-search-bar.component.html',
-  styleUrl: './study-group-search-bar.component.css',
+    selector: 'app-study-group-search-bar',
+    // standalone: true,
+    // imports: [],
+    templateUrl: './study-group-search-bar.component.html',
+    styleUrl: './study-group-search-bar.component.css',
+    standalone: true,
+    imports: [
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatButton,
+        MatIcon,
+        StudyGroupSearchListComponent,
+    ],
 })
 export class StudyGroupSearchBarComponent implements OnInit {
   private dialog = inject(MatDialog);

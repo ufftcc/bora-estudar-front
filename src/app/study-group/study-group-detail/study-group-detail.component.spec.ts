@@ -11,8 +11,8 @@ describe('StudyGroupDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StudyGroupDetailComponent ]
-    })
+    imports: [StudyGroupDetailComponent]
+})
     .compileComponents();
   }));
 

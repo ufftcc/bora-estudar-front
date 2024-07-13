@@ -1,13 +1,31 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '../../../core/security/auth/auth.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SigninBody } from '../../models/signin-body';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { MatButton, MatAnchor } from '@angular/material/button';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css'],
+    standalone: true,
+    imports: [
+        MatCard,
+        MatCardTitle,
+        MatCardContent,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatButton,
+        MatAnchor,
+        RouterLink,
+    ],
 })
 export class LoginComponent implements OnInit {
   private router = inject(Router);

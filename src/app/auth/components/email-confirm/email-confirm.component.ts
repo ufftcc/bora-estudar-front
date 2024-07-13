@@ -3,9 +3,10 @@ import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../../core/security/auth/auth.service";
 
 @Component({
-  selector: 'app-email-confirm',
-  templateUrl: './email-confirm.component.html',
-  styleUrls: ['./email-confirm.component.css']
+    selector: 'app-email-confirm',
+    templateUrl: './email-confirm.component.html',
+    styleUrls: ['./email-confirm.component.css'],
+    standalone: true
 })
 export class EmailConfirmComponent implements OnInit {
   message: string = '';
