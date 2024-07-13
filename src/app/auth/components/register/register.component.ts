@@ -12,7 +12,7 @@ import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
-    styleUrls: ['./register.component.css'],
+    styleUrls: ['./register.component.scss'],
     standalone: true,
     imports: [
         MatCard,

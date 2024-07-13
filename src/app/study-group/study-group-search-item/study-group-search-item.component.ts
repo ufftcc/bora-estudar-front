@@ -9,7 +9,7 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, 
 @Component({
     selector: 'app-study-group-search-item',
     templateUrl: './study-group-search-item.component.html',
-    styleUrls: ['./study-group-search-item.component.css'],
+    styleUrls: ['./study-group-search-item.component.scss'],
     standalone: true,
     imports: [
         MatCard,

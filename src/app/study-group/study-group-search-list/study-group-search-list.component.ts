@@ -9,7 +9,7 @@ import { NgFor } from '@angular/common';
 @Component({
     selector: 'app-study-group-search-list',
     templateUrl: './study-group-search-list.component.html',
-    styleUrls: ['./study-group-search-list.component.css'],
+    styleUrls: ['./study-group-search-list.component.scss'],
     standalone: true,
     imports: [NgFor, StudyGroupSearchItemComponent],
 })

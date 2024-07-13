@@ -12,7 +12,7 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
     // standalone: true,
     // imports: [],
     templateUrl: './study-group-search-bar.component.html',
-    styleUrl: './study-group-search-bar.component.css',
+    styleUrl: './study-group-search-bar.component.scss',
     standalone: true,
     imports: [
         MatFormField,

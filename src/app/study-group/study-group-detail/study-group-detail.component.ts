@@ -11,7 +11,7 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, 
 @Component({
     selector: 'app-study-group-detail',
     templateUrl: './study-group-detail.component.html',
-    styleUrls: ['./study-group-detail.component.css'],
+    styleUrls: ['./study-group-detail.component.scss'],
     standalone: true,
     imports: [
         MatCard,

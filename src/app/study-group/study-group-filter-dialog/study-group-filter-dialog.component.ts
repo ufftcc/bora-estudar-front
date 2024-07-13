@@ -16,7 +16,7 @@ import { MatToolbar } from '@angular/material/toolbar';
     // standalone: true,
     // imports: [],
     templateUrl: './study-group-filter-dialog.component.html',
-    styleUrl: './study-group-filter-dialog.component.css',
+    styleUrl: './study-group-filter-dialog.component.scss',
     standalone: true,
     imports: [
         MatToolbar,

@@ -9,7 +9,7 @@ import { MatToolbar } from '@angular/material/toolbar';
     selector: 'app-header',
     // standalone: true,
     templateUrl: './header.component.html',
-    styleUrl: './header.component.css',
+    styleUrl: './header.component.scss',
     standalone: true,
     imports: [
         MatToolbar,

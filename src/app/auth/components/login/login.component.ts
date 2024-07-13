@@ -11,7 +11,7 @@ import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css'],
+    styleUrls: ['./login.component.scss'],
     standalone: true,
     imports: [
         MatCard,
