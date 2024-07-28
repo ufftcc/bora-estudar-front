@@ -7,6 +7,7 @@ import { StudyGroupSearchBarComponent } from './study-group/study-group-search-b
 import { PasswordRecoveryComponent } from './auth/components/password-recovery/password-recovery.component';
 import { authGuard, loggedInGuard } from './core/security/guard/auth.guard';
 import { StudyGroupDetailComponent } from './study-group/study-group-detail/study-group-detail.component';
+import { StudyCreateGroupComponent } from './study-group/study-create-group/study-create-group.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'search', component: StudyGroupSearchBarComponent },
+      { path: 'create', component: StudyCreateGroupComponent },
       { path: 'study-group/:groupId', component: StudyGroupDetailComponent },
     ],
   },

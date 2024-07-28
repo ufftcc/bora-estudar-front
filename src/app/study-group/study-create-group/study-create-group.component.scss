@@ -1,0 +1,32 @@
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.input20{
+  width: 20%;
+}
+
+.input30{
+  width: 30%;
+}
+
+.input40{
+  width: 67%;
+}
+
+.margin{
+  margin-left: 10px;
+}
+
+.allCenter{
+  display: flex;
+  width: 100%;
+  margin-top: 40px;
+  justify-content: center;
+}

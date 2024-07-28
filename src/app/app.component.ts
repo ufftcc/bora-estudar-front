@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { AuthService } from './core/security/auth/auth.service';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { UserResponseBasicDto } from './shared/models/user/user-response-basic-dto';
@@ -27,12 +27,16 @@ import { MatToolbar } from '@angular/material/toolbar';
     ],
 })
 export class AppComponent implements OnInit {
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef);
   title = 'bora-estudar-front';
   isLoggedIn = false;
   user: UserResponseBasicDto | undefined = undefined;
+  @ViewChild('snav') sidenav!: MatSidenav;
+  showBackIcon = false;
+  appName: string = 'Bora Estudar UFF';
+
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   constructor() {}
 
@@ -42,6 +46,16 @@ export class AppComponent implements OnInit {
       this.isLoggedIn = isLoggedIn;
       this.cdr.detectChanges();
     });
+
+    this.router.events.subscribe(() => {
+      this.showBackIcon = this.router.url !== '/search';
+
+      if(this.router.url === '/create'){
+        this.appName = 'Criar Grupo';
+      } else {
+        this.appName = 'Bora Estudar UFF';
+      }
+    });
   }
 
   public logout() {
@@ -49,6 +63,7 @@ export class AppComponent implements OnInit {
       next: (data) => {
         console.log(data);
         this.router.navigateByUrl('/login');
+        this.close();
       },
       error: (error) => {
         console.log(error);
@@ -67,5 +82,15 @@ export class AppComponent implements OnInit {
         console.log(error);
       },
     });
+  }
+
+  navigateToSearch(): void {
+    this.router.navigate(['/search']);
+  }
+
+  close(){
+    if (this.sidenav) {
+      this.sidenav.close();
+    }
   }
 }

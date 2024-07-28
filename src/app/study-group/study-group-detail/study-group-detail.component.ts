@@ -7,6 +7,7 @@ import { MatButton } from '@angular/material/button';
 import { NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatChipSet, MatChip } from '@angular/material/chips';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { StudyGroupService } from '../study-group.service';
 
 @Component({
     selector: 'app-study-group-detail',
@@ -30,7 +31,7 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, 
     ],
 })
 export class StudyGroupDetailComponent implements OnInit {
-  studyGroupService = inject(StudyGroupMockService);
+  studyGroupService = inject(StudyGroupService);
   studyGroup$ = new Observable<StudyGroup | undefined>(undefined);
 
   constructor(route: ActivatedRoute) {

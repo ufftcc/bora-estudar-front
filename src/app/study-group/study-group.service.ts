@@ -1,6 +1,7 @@
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { StudyGroup } from './study-group';
 
 const AUTH_API = '/api';
 
@@ -13,6 +14,8 @@ const httpOptions = {
 })
 export class StudyGroupService {
   // study-groups/filter
+  studyGroups: StudyGroup[] = [];
+
   private readonly http = inject(HttpClient);
   constructor() {}
 
@@ -71,6 +74,7 @@ export class StudyGroupService {
     return {
       id: id,
       title: subject.name,
+      code: subject.code,
       shortDescription: description,
       modality: mappedModality,
       hour: mappedHour,
@@ -80,5 +84,9 @@ export class StudyGroupService {
         day.name.toLowerCase().substring(0, 3)
       ),
     };
+  }
+
+  get(id: number): Observable<StudyGroup> {
+    return of(this.studyGroups.find((studyGroup: { id: number; }) => studyGroup.id === id)!);
   }
 }

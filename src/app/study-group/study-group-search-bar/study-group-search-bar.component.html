@@ -2,8 +2,14 @@
   <div class="search_row">
     <mat-form-field appearance="outline" class="search_row_search_bar">
       <mat-label>Disciplina</mat-label>
-      <input matInput class="search_row_search_bar" />
+      <input #input matInput class="search_row_search_bar" [matAutocomplete]="auto" (input)="filter()" (focus)="filter()" />
+      <mat-autocomplete requireSelection #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions" [value]="option.code + ' - ' + option.title">
+          ({{ option.code }}) {{ option.title }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
+
     <button
       mat-raised-button
       color="primary"
@@ -21,9 +27,41 @@
   </div>
 
   <div class="search_row">
-    <button>Dias da Semana</button>
-    <button>Horários</button>
+    <button mat-button [matMenuTriggerFor]="menu" class="pesquisarButton">Dias da Semana</button>
+    <mat-menu #menu="matMenu" style="max-width: auto !important;">
+      <div class="position">
+        <section style="display: flex;">
+          <mat-checkbox color="primary" (click)="$event.stopPropagation()">SEG</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation()">TER</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation()">QUA</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation()">QUI</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation()">SEX</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation()">SAB</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation()">DOM</mat-checkbox>
+        </section>
+      </div>
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="menuHora" class="pesquisarButton">Horário</button>
+    <mat-menu #menuHora="matMenu" class="position">
+      <div class="position">
+        <mat-form-field appearance="outline" class="input6" (click)="$event.stopPropagation()">
+          <mat-label>A partir de:</mat-label>
+          <input matInput type="time" />
+        </mat-form-field>
+      </div>
+    </mat-menu>
   </div>
 
-  <app-study-group-search-list></app-study-group-search-list>
+  <div class="example-button-container">
+    <button mat-button class="fabButton" (click)="navigateCreate()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <div class="container">
+    <div *ngFor="let groups of service.studyGroups">
+      <app-study-group-search-item [studyGroup]="groups"></app-study-group-search-item>
+    </div>
+  </div>
 </div>

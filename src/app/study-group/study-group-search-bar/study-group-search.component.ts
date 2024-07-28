@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StudyGroupFilterDialogComponent } from '../study-group-filter-dialog/study-group-filter-dialog.component';
 import { StudyGroupSearchListComponent } from '../study-group-search-list/study-group-search-list.component';
@@ -7,6 +7,13 @@ import { MatButton } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { StudyGroupService } from '../study-group.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { StudyGroupSearchItemComponent } from '../study-group-search-item/study-group-search-item.component';
+import { NgFor } from '@angular/common';
+import { StudyGroup } from '../study-group';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-study-group-search-bar',
@@ -21,17 +28,33 @@ import { StudyGroupService } from '../study-group.service';
         MatInput,
         MatButton,
         MatIcon,
+        MatMenuModule,
+        MatCheckboxModule,
         StudyGroupSearchListComponent,
+        NgFor,
+        StudyGroupSearchItemComponent,
+        MatAutocompleteModule
     ],
 })
 export class StudyGroupSearchBarComponent implements OnInit {
   private dialog = inject(MatDialog);
+  options: any[] = [];
+  filteredOptions!: any[];
+  @ViewChild('input') input!: ElementRef<HTMLInputElement>;
 
   constructor(
-    public service: StudyGroupService
+    public service: StudyGroupService,
+    private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.service.getStudyGroups().subscribe((dados) => {
+      console.error(dados)
+      this.service.studyGroups = dados;
+      this.options = dados;
+      this.filteredOptions = this.options.slice();
+    })
+  }
 
   openFilterDialog(): void {
     let dialogRef = this.dialog.open(StudyGroupFilterDialogComponent, {
@@ -52,4 +75,14 @@ export class StudyGroupSearchBarComponent implements OnInit {
     });
   }
 
+  filter(): void {
+    const filterValue = this.input.nativeElement.value.toLowerCase();
+    this.filteredOptions = this.options.filter(option =>
+      option.title.toLowerCase().includes(filterValue) || option.code.toLowerCase().includes(filterValue)
+    );
+  }
+
+  navigateCreate(): void {
+    this.router.navigate(['/create']);
+  }
 }

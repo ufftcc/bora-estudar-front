@@ -7,4 +7,5 @@ export interface StudyGroup {
   daysOfWeek: string[];
   monitor: string;
   participants: string;
+  code: string;
 };
