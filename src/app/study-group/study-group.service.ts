@@ -1,4 +1,4 @@
-import { map, Observable, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -17,18 +17,15 @@ export class StudyGroupService {
   constructor() {}
 
   getStudyGroups(): Observable<any> {
-    this.http.get(AUTH_API.concat(`/subjects`), httpOptions).pipe(
-      tap((response: any) => {
-        console.log(response);
-      })
-    );
-
     return this.http
       .post(`${AUTH_API}/study-groups/filter`, {}, httpOptions)
       .pipe(
         map((response: any) => {
-          console.log(response);
-          response.map(this.mappingStudyGroup);
+          return response.map(this.mappingStudyGroup).filter((item: undefined) => item !== undefined);
+        }),
+        catchError(error => {
+          console.error('Erro na chamada de API', error);
+          return of([]);
         })
       );
   }

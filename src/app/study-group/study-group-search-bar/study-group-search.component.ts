@@ -6,6 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { StudyGroupService } from '../study-group.service';
 
 @Component({
     selector: 'app-study-group-search-bar',
@@ -26,7 +27,9 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 export class StudyGroupSearchBarComponent implements OnInit {
   private dialog = inject(MatDialog);
 
-  constructor() {}
+  constructor(
+    public service: StudyGroupService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -48,4 +51,5 @@ export class StudyGroupSearchBarComponent implements OnInit {
       }
     });
   }
+
 }

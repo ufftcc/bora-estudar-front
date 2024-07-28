@@ -14,22 +14,15 @@ import { NgFor } from '@angular/common';
     imports: [NgFor, StudyGroupSearchItemComponent],
 })
 export class StudyGroupSearchListComponent implements OnInit {
-  studyGroupService = inject(StudyGroupMockService);
-  studyGroupServiceReal = inject(StudyGroupService);
-  studyGroups$: StudyGroup[] = [];
-  studyGroupsReal$: Observable<any> = new Observable();
+  studyGroups: StudyGroup[] = [];
 
-  constructor() {
-    this.studyGroups$ = this.studyGroupService.getStudyGroups();
-    this.studyGroupServiceReal.getStudyGroups().subscribe({
-      next: (data) => {
-        this.studyGroupsReal$ = data;
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
+  constructor(
+    public service: StudyGroupService) {}
+
+  ngOnInit() {
+    this.service.getStudyGroups().subscribe((dados) => {
+      console.error(dados)
+      this.studyGroups = dados;
+    })
   }
-
-  ngOnInit() {}
 }
