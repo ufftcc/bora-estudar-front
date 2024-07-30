@@ -54,8 +54,6 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     if (!this.loginForm.valid) return;
 
-    console.log('Login', this.loginForm.value);
-
     const body: SigninBody = {
       email: this.loginForm.controls['email'].value,
       password: this.loginForm.controls['password'].value,
@@ -63,7 +61,6 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(body).subscribe({
       next: (data) => {
-        console.log(data);
         this.router.navigateByUrl('/search');
       },
       error: (error) => {
