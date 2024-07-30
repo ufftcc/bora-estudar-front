@@ -13,20 +13,17 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class StudyGroupService {
-  // study-groups/filter
   studyGroups: StudyGroup[] = [];
 
   private readonly http = inject(HttpClient);
   constructor() {}
 
-  getStudyGroups(): Observable<any> {
+  getStudyGroups(): Observable<any[]> {
     return this.http
-      .post(`${AUTH_API}/study-groups/filter`, {}, httpOptions)
+      .post<any[]>(`${AUTH_API}/study-groups/filter`, {}, httpOptions)
       .pipe(
-        map((response: any) => {
-          return response.map(this.mappingStudyGroup).filter((item: undefined) => item !== undefined);
-        }),
-        catchError(error => {
+        map((studyGroups) => studyGroups.map(this.mappingStudyGroup)),
+        catchError((error) => {
           console.error('Erro na chamada de API', error);
           return of([]);
         })
@@ -63,10 +60,10 @@ export class StudyGroupService {
     switch (modality) {
       case 'REMOTE':
         mappedModality = 'remoto';
-        return;
+        break;
       case 'PRESENCIAL':
         mappedModality = 'presencial';
-        return;
+        break;
       default:
         mappedModality = 'híbrido';
     }
@@ -87,6 +84,10 @@ export class StudyGroupService {
   }
 
   get(id: number): Observable<StudyGroup> {
-    return of(this.studyGroups.find((studyGroup: { id: number; }) => studyGroup.id === id)!);
+    return of(
+      this.studyGroups.find(
+        (studyGroup: { id: number }) => studyGroup.id === id
+      )!
+    );
   }
 }
