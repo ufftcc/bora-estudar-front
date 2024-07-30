@@ -11,7 +11,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StudyGroupSearchItemComponent } from '../study-group-search-item/study-group-search-item.component';
 import { NgFor } from '@angular/common';
-import { StudyGroup } from '../study-group';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Router } from '@angular/router';
 
@@ -49,7 +48,7 @@ export class StudyGroupSearchBarComponent implements OnInit {
 
   ngOnInit() {
     this.service.getStudyGroups().subscribe((dados) => {
-      console.error(dados)
+      console.log(dados)
       this.service.studyGroups = dados;
       this.options = dados;
       this.filteredOptions = this.options.slice();
