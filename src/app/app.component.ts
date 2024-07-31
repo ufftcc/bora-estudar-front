@@ -27,12 +27,12 @@ import { MatToolbar } from '@angular/material/toolbar';
     ],
 })
 export class AppComponent implements OnInit {
+  appName: string = 'Bora Estudar UFF';
   title = 'bora-estudar-front';
   isLoggedIn = false;
   user: UserResponseBasicDto | undefined = undefined;
-  @ViewChild('snav') sidenav!: MatSidenav;
   showBackIcon = false;
-  appName: string = 'Bora Estudar UFF';
+  @ViewChild('snav') sidenav!: MatSidenav;
 
   private authService = inject(AuthService);
   private router = inject(Router);

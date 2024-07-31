@@ -32,10 +32,11 @@
         mat-raised-button
         color="primary"
         class="full_width"
-        [routerLink]="['/study-group', studyGroup.id]"
-      >
+        (click)="openDetalheDialog(studyGroup)">
         Detalhes
       </button>
     </mat-card-actions>
   </mat-card>
 </div>
+
+<!-- [routerLink]="['/study-group', studyGroup.id]" -->

@@ -2,10 +2,6 @@
   position: fixed;
 }
 
-.spacer {
-  flex: 1 1 auto;
-}
-
 h1.app_name {
   margin-left: 8px;
 }
@@ -31,4 +27,8 @@ h1.app_name {
 
 .example-spacer {
   flex: 1 1 auto;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-text-field__input{
+  width: 100% !important;
 }

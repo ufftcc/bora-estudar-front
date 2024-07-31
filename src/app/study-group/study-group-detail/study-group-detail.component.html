@@ -1,4 +1,37 @@
-<div class="container">
+<mat-toolbar color="primary" position="start" class="header_toolbar">
+  <button mat-icon-button (click)="close()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <span class="spacer"></span>
+
+  <span>Detalhes</span>
+
+  <span class="spacer"></span>
+</mat-toolbar>
+
+<div class="allGrid m-top">
+  <mat-card-title>{{ studyGroup.code + ' - ' + studyGroup.title }}</mat-card-title>
+  <mat-card-subtitle>{{ studyGroup.shortDescription }}</mat-card-subtitle>
+
+  <div class="allBetween m-top">
+    <p><strong>Alunos:</strong> {{ studyGroup.participants }}</p>
+    <p><strong>Horario:</strong> {{ studyGroup.hour }}</p>
+  </div>
+
+  <div>
+    <p>Dias da Semana</p>
+    <mat-chip-set>
+      <mat-chip *ngFor="let day of diasSemana" [ngClass]="{'selected': studyGroup.daysOfWeek.includes(day)}">
+        <p [ngClass]="{'selectedText': studyGroup.daysOfWeek.includes(day)}" style="margin-top: 12px;">{{ day | titlecase }}</p>
+      </mat-chip>
+    </mat-chip-set>
+  </div>
+
+  <button mat-raised-button color="primary" class="full_width mtop">Entrar</button>
+</div>
+
+<!-- <div class="container">
   @if( studyGroup$ | async ; as studyGroup) { @if(!!studyGroup){
   <mat-card>
     <mat-card-header>
@@ -40,4 +73,4 @@
   } } @else {
   <p>Loading...</p>
   }
-</div>
+</div> -->

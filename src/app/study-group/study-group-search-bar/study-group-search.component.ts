@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StudyGroupFilterDialogComponent } from '../study-group-filter-dialog/study-group-filter-dialog.component';
 import { StudyGroupSearchListComponent } from '../study-group-search-list/study-group-search-list.component';
@@ -16,8 +16,6 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-study-group-search-bar',
-    // standalone: true,
-    // imports: [],
     templateUrl: './study-group-search-bar.component.html',
     styleUrl: './study-group-search-bar.component.scss',
     standalone: true,
@@ -36,49 +34,75 @@ import { Router } from '@angular/router';
     ],
 })
 export class StudyGroupSearchBarComponent implements OnInit {
-  private dialog = inject(MatDialog);
   options: any[] = [];
   filteredOptions!: any[];
+  selectedDays: Set<string> = new Set();
+  selectedHour: string = '';
   @ViewChild('input') input!: ElementRef<HTMLInputElement>;
 
   constructor(
+    private cdr: ChangeDetectorRef,
     public service: StudyGroupService,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.service.getStudyGroups().subscribe((dados) => {
-      console.log(dados)
+      console.log('Dados carregados:', dados);
       this.service.studyGroups = dados;
       this.options = dados;
       this.filteredOptions = this.options.slice();
     })
   }
 
-  openFilterDialog(): void {
-    let dialogRef = this.dialog.open(StudyGroupFilterDialogComponent, {
-      // width: '100%',
-      // height: '100%',
-      // panelClass: 'full-screen-dialog',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      height: '100%',
-      width: '100%',
-    });
-
-    dialogRef.afterClosed().subscribe((selectedDays: any) => {
-      if (selectedDays) {
-        // this.addToFilterToSendToBackEnd(selectedDays);
-        console.log(selectedDays);
-      }
-    });
-  }
-
   filter(): void {
     const filterValue = this.input.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.options.filter(option =>
+    this.filteredOptions = this.service.studyGroups.filter(option =>
       option.title.toLowerCase().includes(filterValue) || option.code.toLowerCase().includes(filterValue)
     );
+  }
+
+  applyFilters(): void {
+    const filterValue = this.input.nativeElement.value.toLowerCase();
+
+    // Dividir o valor do filtro em partes, se necessário
+    const [codeFilter, titleFilter] = filterValue.split(' - ').map(part => part.trim());
+
+    const filter = this.service.studyGroups?.filter(option =>
+      this.filterByDayOfWeek(option) &&
+      this.filterByHour(option) &&
+      (option.code.toLowerCase().includes(codeFilter) ||
+       option.title.toLowerCase().includes(titleFilter))
+    ) || [];
+
+    this.options = [...filter];
+    this.cdr.detectChanges();
+  }
+
+  filterByDayOfWeek(option: any): boolean {
+    if (!option.daysOfWeek || this.selectedDays.size === 0) {
+      return true; // Sem filtro de dia da semana ou dados não definidos
+    }
+    return option.daysOfWeek.some((day: string) => this.selectedDays.has(day.toLowerCase()));
+  }
+
+  filterByHour(option: any): boolean {
+    if (!this.selectedHour) {
+      return true; // Sem filtro de horário
+    }
+    return option.hour >= this.selectedHour;
+  }
+
+  days(day: string): void {
+    if (this.selectedDays.has(day)) {
+      this.selectedDays.delete(day);
+    } else {
+      this.selectedDays.add(day);
+    }
+  }
+
+  onHourChange(event: any): void {
+    this.selectedHour = event.target.value;
   }
 
   navigateCreate(): void {

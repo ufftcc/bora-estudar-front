@@ -5,6 +5,8 @@ import { MatButton } from '@angular/material/button';
 import { NgFor, TitleCasePipe } from '@angular/common';
 import { MatChipSet, MatChip } from '@angular/material/chips';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { StudyGroupDetailComponent } from '../study-group-detail/study-group-detail.component';
 
 @Component({
     selector: 'app-study-group-search-item',
@@ -29,5 +31,21 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, 
 export class StudyGroupSearchItemComponent {
   @Input() studyGroup!: StudyGroup;
 
-  constructor() {}
+  constructor(
+    private dialog: MatDialog
+  ) {}
+
+  openDetalheDialog(id: any): void {
+    let dialogRef = this.dialog.open(StudyGroupDetailComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: { id: id }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.error(result);
+    });
+  }
 }

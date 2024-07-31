@@ -13,17 +13,10 @@
     <button
       mat-raised-button
       color="primary"
-      class="search_row_search_item">
+      class="search_row_search_item"
+      (click)="applyFilters()">
       <mat-icon class="search_row_icon">search</mat-icon>
     </button>
-    <!-- <button
-      mat-raised-button
-      color="primary"
-      class="search_row_search_item"
-      (click)="openFilterDialog()"
-    >
-      <mat-icon class="search_row_icon">filter_list</mat-icon>
-    </button> -->
   </div>
 
   <div class="search_row">
@@ -31,13 +24,13 @@
     <mat-menu #menu="matMenu" style="max-width: auto !important;">
       <div class="position">
         <section style="display: flex;">
-          <mat-checkbox color="primary" (click)="$event.stopPropagation()">SEG</mat-checkbox>
-          <mat-checkbox color="primary" (click)="$event.stopPropagation()">TER</mat-checkbox>
-          <mat-checkbox color="primary" (click)="$event.stopPropagation()">QUA</mat-checkbox>
-          <mat-checkbox color="primary" (click)="$event.stopPropagation()">QUI</mat-checkbox>
-          <mat-checkbox color="primary" (click)="$event.stopPropagation()">SEX</mat-checkbox>
-          <mat-checkbox color="primary" (click)="$event.stopPropagation()">SAB</mat-checkbox>
-          <mat-checkbox color="primary" (click)="$event.stopPropagation()">DOM</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('dom')">DOM</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('seg')">SEG</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('ter')">TER</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('qua')">QUA</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('qui')">QUI</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('sex')">SEX</mat-checkbox>
+          <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('sab')">SAB</mat-checkbox>
         </section>
       </div>
     </mat-menu>
@@ -47,7 +40,7 @@
       <div class="position">
         <mat-form-field appearance="outline" class="input6" (click)="$event.stopPropagation()">
           <mat-label>A partir de:</mat-label>
-          <input matInput type="time" />
+          <input matInput type="time" (change)="onHourChange($event)"/>
         </mat-form-field>
       </div>
     </mat-menu>
@@ -60,7 +53,7 @@
   </div>
 
   <div class="container">
-    <div *ngFor="let groups of service.studyGroups">
+    <div *ngFor="let groups of options">
       <app-study-group-search-item [studyGroup]="groups"></app-study-group-search-item>
     </div>
   </div>
