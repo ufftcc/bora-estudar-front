@@ -1,24 +1,23 @@
 import { CommonModule, NgFor } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { MatOption } from '@angular/material/core';
-import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { MatToolbar } from '@angular/material/toolbar';
 import { StudyGroupService } from '../study-group.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
-  selector: 'app-study-create-group',
+  selector: 'app-study-update-group',
   standalone: true,
   imports: [
     CommonModule,
@@ -40,11 +39,11 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     ToastModule,
     ProgressSpinnerModule
   ],
-  templateUrl: './study-create-group.component.html',
-  styleUrl: './study-create-group.component.scss',
+  templateUrl: './study-update-group.component.html',
+  styleUrl: './study-update-group.component.scss',
   providers: [MessageService]
 })
-export class StudyCreateGroupComponent implements OnInit {
+export class StudyUpdateGroupComponent implements OnInit {
   formulario!: UntypedFormGroup;
   options: any[] = [];
   filteredOptions!: any[];
@@ -71,11 +70,13 @@ export class StudyCreateGroupComponent implements OnInit {
 
   constructor(
     private messageService: MessageService,
+    private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
     public service: StudyGroupService,
     private builder: UntypedFormBuilder) {
     this.formulario = this.builder.group({
+      id: [''],
       title: [''],
       description: [''],
       campoOculto: [''],
@@ -83,17 +84,30 @@ export class StudyCreateGroupComponent implements OnInit {
       maxStudents: [''],
       meetingTime: [''],
       modality: ["REMOTE"],
-      weekdays: ['']
+      weekdays: [[]]
     })
   }
 
   ngOnInit(): void {
     this.service.getSubjects().subscribe((dados) => {
-      console.error('Dados carregados:', dados);
       this.service.subjects = dados;
       this.options = dados;
       this.filteredOptions = this.options.slice();
     })
+
+    this.route.queryParams.subscribe(params => {
+      const groupId = params['id'];
+
+      this.service.getStudyGroupId(groupId).subscribe((dados: any) => {
+        this.formulario.patchValue(dados)
+        this.formulario.get('campoOculto')?.patchValue(dados.subject.code + ' - ' + dados.subject.name);
+
+        const selectedDays = dados.weekdays.map((day: { id: number; name: string }) => {
+          return this.daysOfWeek.find(d => d.id === day.id);
+        });
+        this.formulario.get('weekdays')?.patchValue(selectedDays);
+      })
+    });
   }
 
   filter(): void {
@@ -108,15 +122,18 @@ export class StudyCreateGroupComponent implements OnInit {
     this.formulario.get('campoOculto')?.patchValue(option.code + ' - ' + option.name);
   }
 
-  createGroups(){
+  editGroups(){
     const idUsuario = localStorage.getItem('idUsuario');
     const id = Number(idUsuario);
     const title = this.formulario?.value.subject.code + " " + this.formulario?.value.subject.name;
-    console.error(title)
+
+    const groupId = this.formulario?.value.id;
 
     const studyGroupData = {
+      id: this.formulario?.value.id,
       title: title,
       description: this.formulario?.value.description,
+      userId: id,
       ownerId: id,
       subject: this.formulario?.value.subject,
       weekdays: this.formulario?.value.weekdays,
@@ -127,20 +144,21 @@ export class StudyCreateGroupComponent implements OnInit {
 
     this.loading = true;
 
-    this.service.createStudyGroup(studyGroupData).subscribe(
+    this.service.editStudyGroup(studyGroupData, groupId).subscribe(
       response => {
-        console.log('Grupo de estudo criado com sucesso:', response);
-        this.messageService.add({ severity: 'success', summary: '', detail: 'Grupo criado com sucesso!' });
+        console.log('Grupo de estudo editado com sucesso:', response);
+        this.messageService.add({ severity: 'success', summary: '', detail: 'Grupo editado com sucesso!'});
 
         setTimeout(() => {
           this.loading = false;
           this.router.navigate(['/my-study-group']);
         }, 3000);
       },
-        error => {
+      error => {
         this.loading = false;
         console.error('Erro ao criar grupo de estudo:', error);
       }
     );
   }
+
 }

@@ -60,9 +60,9 @@ export class RegisterComponent implements OnInit {
     console.log('signup', this.signupForm.value);
 
     const body: SignupBody = {
-      name: this.signupForm.controls['name'].value,
-      email: this.signupForm.controls['username'].value,
-      password: this.signupForm.controls['password'].value,
+      name: this.signupForm?.value.name,
+      email: this.signupForm?.value.email,
+      password: this.signupForm?.value.password
     };
 
     this.authService.register(body).subscribe({

@@ -29,3 +29,12 @@ mat-chip {
 .full_width{
   width: 100%;
 }
+
+.selected {
+  background-color: #3f51b5 !important;
+}
+
+.selectedText{
+  color: white;
+  margin-top: 12px;
+}

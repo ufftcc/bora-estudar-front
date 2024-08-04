@@ -1,43 +1,37 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { StudyGroupFilterDialogComponent } from '../study-group-filter-dialog/study-group-filter-dialog.component';
-import { StudyGroupSearchListComponent } from '../study-group-search-list/study-group-search-list.component';
-import { MatIcon } from '@angular/material/icon';
-import { MatButton } from '@angular/material/button';
-import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Router } from '@angular/router';
 import { StudyGroupService } from '../study-group.service';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
-import { StudyGroupSearchItemComponent } from '../study-group-search-item/study-group-search-item.component';
 import { NgFor } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { Router } from '@angular/router';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { MatButton } from '@angular/material/button';
+import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { StudyGroupSearchItemComponent } from '../study-group-search-item/study-group-search-item.component';
+import { StudyGroupSearchListComponent } from '../study-group-search-list/study-group-search-list.component';
 
 @Component({
-    selector: 'app-study-group-search-bar',
-    templateUrl: './study-group-search-bar.component.html',
-    styleUrl: './study-group-search-bar.component.scss',
-    standalone: true,
-    imports: [
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatButton,
-        MatIcon,
-        MatMenuModule,
-        MatCheckboxModule,
-        StudyGroupSearchListComponent,
-        NgFor,
-        StudyGroupSearchItemComponent,
-        MatAutocompleteModule,
-        ToastModule
-    ],
-    providers: [MessageService]
+  selector: 'app-my-study-group',
+  standalone: true,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatButton,
+    MatIcon,
+    MatMenuModule,
+    MatCheckboxModule,
+    StudyGroupSearchListComponent,
+    NgFor,
+    StudyGroupSearchItemComponent,
+    MatAutocompleteModule
+  ],
+  templateUrl: './my-study-group.component.html',
+  styleUrl: './my-study-group.component.scss'
 })
-export class StudyGroupSearchBarComponent implements OnInit {
+export class MyStudyGroupComponent implements OnInit {
   options: any[] = [];
   filteredOptions!: any[];
   selectedDays: Set<string> = new Set();
@@ -53,9 +47,12 @@ export class StudyGroupSearchBarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.service.getStudyGroups().subscribe((dados) => {
+    const idUsuario = localStorage.getItem('idUsuario');
+    const id = Number(idUsuario);
+
+    this.service.getStudyGroupsFind(id).subscribe((dados) => {
       console.log('Dados carregados:', dados);
-      this.service.studyGroups = dados;
+      this.service.myStudyGroups = dados;
       this.options = dados;
       this.filteredOptions = this.options.slice();
     })
@@ -63,7 +60,7 @@ export class StudyGroupSearchBarComponent implements OnInit {
 
   filter(): void {
     const filterValue = this.input.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.service.studyGroups.filter(option =>
+    this.filteredOptions = this.service.myStudyGroups.filter(option =>
       option.title.toLowerCase().includes(filterValue) || option.code.toLowerCase().includes(filterValue)
     );
   }
@@ -74,7 +71,7 @@ export class StudyGroupSearchBarComponent implements OnInit {
     // Dividir o valor do filtro em partes, se necessário
     const [codeFilter, titleFilter] = filterValue.split(' - ').map(part => part.trim());
 
-    const filter = this.service.studyGroups?.filter(option =>
+    const filter = this.service.myStudyGroups?.filter(option =>
       this.filterByDayOfWeek(option) &&
       this.filterByHour(option) &&
       (option.code.toLowerCase().includes(codeFilter) ||
@@ -116,9 +113,5 @@ export class StudyGroupSearchBarComponent implements OnInit {
 
   onHourChange(event: any): void {
     this.selectedHour = event.target.value;
-  }
-
-  navigateCreate(): void {
-    this.router.navigate(['/create']);
   }
 }

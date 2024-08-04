@@ -8,6 +8,8 @@ import { PasswordRecoveryComponent } from './auth/components/password-recovery/p
 import { authGuard, loggedInGuard } from './core/security/guard/auth.guard';
 import { StudyGroupDetailComponent } from './study-group/study-group-detail/study-group-detail.component';
 import { StudyCreateGroupComponent } from './study-group/study-create-group/study-create-group.component';
+import { MyStudyGroupComponent } from './study-group/my-study-group/my-study-group.component';
+import { StudyUpdateGroupComponent } from './study-group/study-update-group/study-update-group.component';
 
 const routes: Routes = [
   {
@@ -27,6 +29,8 @@ const routes: Routes = [
       { path: 'search', component: StudyGroupSearchBarComponent },
       { path: 'create', component: StudyCreateGroupComponent },
       { path: 'study-group/:groupId', component: StudyGroupDetailComponent },
+      { path: 'my-study-group', component: MyStudyGroupComponent },
+      { path: 'edit', component: StudyUpdateGroupComponent },
     ],
   },
 ];

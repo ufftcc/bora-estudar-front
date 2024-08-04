@@ -30,7 +30,7 @@
     <button mat-button [matMenuTriggerFor]="menu" class="pesquisarButton">Dias da Semana</button>
     <mat-menu #menu="matMenu" style="max-width: auto !important;">
       <div class="position">
-        <section style="display: flex;" #semanas>
+        <section style="display: flex;">
           <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('dom')">DOM</mat-checkbox>
           <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('seg')">SEG</mat-checkbox>
           <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('ter')">TER</mat-checkbox>
@@ -53,19 +53,9 @@
     </mat-menu>
   </div>
 
-  <div class="example-button-container">
-    <button mat-button class="fabButton" (click)="navigateCreate()">
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
-
   <div class="container">
     <div *ngFor="let groups of options">
-      <app-study-group-search-item
-      [studyGroup]="groups">
-      </app-study-group-search-item>
+      <app-study-group-search-item [studyGroup]="groups"></app-study-group-search-item>
     </div>
   </div>
 </div>
-
-<p-toast />

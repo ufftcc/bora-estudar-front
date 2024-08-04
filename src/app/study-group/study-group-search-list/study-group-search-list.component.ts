@@ -14,15 +14,14 @@ import { NgFor } from '@angular/common';
 export class StudyGroupSearchListComponent implements OnInit {
   studyGroups: StudyGroup[] = [];
 
-  constructor(public service: StudyGroupService) {}
+  constructor(
+    public service: StudyGroupService) {}
 
   ngOnInit() {
     this.getStudyGroups();
   }
 
   getStudyGroups(): void {
-    this.service
-      .getStudyGroups()
-      .subscribe((studyGroups) => (this.studyGroups = studyGroups));
+    this.service.getStudyGroups().subscribe((studyGroups) => (this.studyGroups = studyGroups));
   }
 }

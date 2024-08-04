@@ -61,6 +61,8 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(body).subscribe({
       next: (data) => {
+        const idUsuario = data.id.toString();
+        localStorage.setItem('idUsuario', idUsuario);
         this.router.navigateByUrl('/search');
       },
       error: (error) => {

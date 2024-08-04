@@ -28,8 +28,24 @@
     </mat-chip-set>
   </div>
 
-  <button mat-raised-button color="primary" class="full_width mtop">Entrar</button>
+  @if(loading === true){
+    <p-progressSpinner class="spinerCenter" ariaLabel="loading" />
+  } @else {
+    @if(this.userInGroup === true){
+      <button mat-raised-button color="primary" class="full_width mtop">Entrar no Discord</button>
+
+      @if(this.isOwnerId === true){
+        <button mat-raised-button color="primary" class="full_width mtop" (click)="editGroup()">Editar</button>
+      }
+
+      <button mat-raised-button class="full_width mtop" (click)="leaveGroup()">Sair</button>
+    } @else {
+      <button mat-raised-button color="primary" class="full_width mtop" (click)="joinGroup()">Entrar</button>
+    }
+  }
 </div>
+
+<p-toast />
 
 <!-- <div class="container">
   @if( studyGroup$ | async ; as studyGroup) { @if(!!studyGroup){

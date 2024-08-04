@@ -22,11 +22,12 @@
         {{ studyGroup.hour }}
       </p>
       <mat-chip-set>
-        <mat-chip *ngFor="let day of studyGroup.daysOfWeek">{{
-          day | titlecase
-        }}</mat-chip>
+        <mat-chip class="selected" *ngFor="let day of studyGroup.daysOfWeek">
+         <p class="selectedText">{{day | titlecase}}</p>
+        </mat-chip>
       </mat-chip-set>
     </mat-card-content>
+
     <mat-card-actions>
       <button
         mat-raised-button

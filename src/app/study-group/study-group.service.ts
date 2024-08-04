@@ -14,6 +14,8 @@ const httpOptions = {
 })
 export class StudyGroupService {
   studyGroups: StudyGroup[] = [];
+  myStudyGroups: StudyGroup[] = [];
+  subjects: any[] = [];
 
   private readonly http = inject(HttpClient);
   constructor() {}
@@ -30,6 +32,19 @@ export class StudyGroupService {
       );
   }
 
+  getStudyGroupsFind(studentId: number): Observable<any[]> {
+    const requestBody = { studentId };
+
+    return this.http.post<any[]>(`${AUTH_API}/study-groups/filter`, requestBody, httpOptions)
+    .pipe(
+      map((studyGroups) => studyGroups.map(this.mappingStudyGroup)),
+      catchError((error) => {
+        console.error('Erro na chamada de API', error);
+        return of([]);
+      })
+    );;
+  }
+
   private mappingStudyGroup(item: any): any {
     const {
       id,
@@ -41,6 +56,7 @@ export class StudyGroupService {
       meetingTime,
       modality,
       weekdays,
+      ownerId,
     } = item;
 
     // const shortDescription =
@@ -72,22 +88,40 @@ export class StudyGroupService {
       id: id,
       title: subject.name,
       code: subject.code,
+      ownerId: ownerId,
       shortDescription: description,
       modality: mappedModality,
       hour: mappedHour,
       monitor: monitorText,
       participants: participantsText,
+      students: students,
       daysOfWeek: weekdays.map((day: { name: string }) =>
         day.name.toLowerCase().substring(0, 3)
       ),
     };
   }
 
-  get(id: number): Observable<StudyGroup> {
-    return of(
-      this.studyGroups.find(
-        (studyGroup: { id: number }) => studyGroup.id === id
-      )!
-    );
+  joinGroupService(groupId: number,id: number){
+    return this.http.post<any[]>(`${AUTH_API}/study-groups/${groupId}/students/${id}/join`, {}, httpOptions)
+  }
+
+  leaveGroupService(groupId: number,id: number){
+    return this.http.post<any[]>(`${AUTH_API}/study-groups/${groupId}/students/${id}/leave`, {}, httpOptions)
+  }
+
+  getSubjects(): Observable<any[]> {
+    return this.http.get<any[]>(`${AUTH_API}/subjects`);
+  }
+
+  getStudyGroupId(studyGroupId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${AUTH_API}/study-groups/${studyGroupId}`);
+  }
+
+  createStudyGroup(studyGroupData: any): Observable<any> {
+    return this.http.post<any>(`${AUTH_API}/study-groups`, studyGroupData);
+  }
+
+  editStudyGroup(studyGroupData: any, groupId: number): Observable<any> {
+    return this.http.put<any>(`${AUTH_API}/study-groups/${groupId}`, studyGroupData);
   }
 }
