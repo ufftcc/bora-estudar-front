@@ -54,7 +54,6 @@ export class StudyGroupSearchBarComponent implements OnInit {
 
   ngOnInit() {
     this.service.getStudyGroups().subscribe((dados) => {
-      console.log('Dados carregados:', dados);
       this.service.studyGroups = dados;
       this.options = dados;
       this.filteredOptions = this.options.slice();
@@ -90,6 +89,12 @@ export class StudyGroupSearchBarComponent implements OnInit {
     this.time.nativeElement.value = '';
     this.checkboxes.forEach(checkbox => checkbox.checked = false);
     this.cdr.detectChanges();
+
+    this.service.getStudyGroups().subscribe((dados) => {
+      this.service.studyGroups = dados;
+      this.options = dados;
+      this.filteredOptions = this.options.slice();
+    })
   }
 
   filterByDayOfWeek(option: any): boolean {

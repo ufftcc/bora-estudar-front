@@ -16,6 +16,7 @@ import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-study-group-detail',
@@ -58,6 +59,7 @@ export class StudyGroupDetailComponent implements OnInit {
   loading: boolean = false;
 
   constructor(
+    private snackBar: MatSnackBar,
     private router: Router,
     public service: StudyGroupService,
     private messageService: MessageService,
@@ -93,13 +95,13 @@ export class StudyGroupDetailComponent implements OnInit {
       this.service.joinGroupService(this.groupId, id).subscribe({
         next: (resposta) => {
           console.error(resposta);
-          this.messageService.add({ severity: 'success', summary: '', detail: 'Entrou no grupo com sucesso!'});
-
-          setTimeout(() => {
-            this.loading = false;
-            this.close();
-            this.router.navigate(['/my-study-group']);
-          }, 3000);
+          this.snackBar.open(
+            'Entrou no grupo com sucesso!',
+            '',
+            { duration: 5000 }
+          );
+          this.close();
+          this.router.navigate(['/my-study-group']);
         },
         error: (error) => {
           this.loading = false;
@@ -120,16 +122,17 @@ export class StudyGroupDetailComponent implements OnInit {
       this.service.leaveGroupService(this.groupId, id).subscribe({
         next: (resposta) => {
           console.error(resposta);
-          this.messageService.add({ severity: 'success', summary: '', detail: 'Saiu do grupo com sucesso!'});
 
+          this.close();
+          this.snackBar.open(
+            'Saiu do grupo com sucesso!',
+            '',
+            { duration: 5000 }
+          );
+          this.router.navigate(['/search']);
           setTimeout(() => {
-            this.close();
-            this.loading = false;
-            this.router.navigate(['/search']);
-            setTimeout(() => {
-              this.router.navigate(['/my-study-group']);
-            }, 10);
-          }, 3000);
+            this.router.navigate(['/my-study-group']);
+          }, 10);
         },
         error: (error) => {
           console.error('Erro ao entrar no grupo:', error);

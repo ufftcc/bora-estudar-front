@@ -16,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-study-create-group',
@@ -70,6 +71,7 @@ export class StudyCreateGroupComponent implements OnInit {
   protected selectedModality: String | null = null;
 
   constructor(
+    private snackBar: MatSnackBar,
     private messageService: MessageService,
     private router: Router,
     private cdr: ChangeDetectorRef,
@@ -130,12 +132,12 @@ export class StudyCreateGroupComponent implements OnInit {
     this.service.createStudyGroup(studyGroupData).subscribe(
       response => {
         console.log('Grupo de estudo criado com sucesso:', response);
-        this.messageService.add({ severity: 'success', summary: '', detail: 'Grupo criado com sucesso!' });
-
-        setTimeout(() => {
-          this.loading = false;
-          this.router.navigate(['/my-study-group']);
-        }, 3000);
+        this.snackBar.open(
+          'Grupo de estudo criado com sucesso!',
+          '',
+          { duration: 5000 }
+        );
+        this.router.navigate(['/my-study-group']);
       },
         error => {
         this.loading = false;

@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-study-update-group',
@@ -69,6 +70,7 @@ export class StudyUpdateGroupComponent implements OnInit {
   protected selectedModality: String | null = null;
 
   constructor(
+    private snackBar: MatSnackBar,
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
@@ -147,12 +149,13 @@ export class StudyUpdateGroupComponent implements OnInit {
     this.service.editStudyGroup(studyGroupData, groupId).subscribe(
       response => {
         console.log('Grupo de estudo editado com sucesso:', response);
-        this.messageService.add({ severity: 'success', summary: '', detail: 'Grupo editado com sucesso!'});
 
-        setTimeout(() => {
-          this.loading = false;
-          this.router.navigate(['/my-study-group']);
-        }, 3000);
+        this.snackBar.open(
+          'Grupo de estudo editado com sucesso!',
+          '',
+          { duration: 5000 }
+        );
+        this.router.navigate(['/my-study-group']);
       },
       error => {
         this.loading = false;
