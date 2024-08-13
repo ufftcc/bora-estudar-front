@@ -38,9 +38,6 @@ export class AuthService {
     return this.http
       .post<UserResponseBasicDto>(AUTH_API.concat('/signup'), body, httpOptions)
       .pipe(
-        tap((user) => {
-          this.storageService.saveUser(user);
-        }),
         catchError((error) => {
           console.log(`Error on login: ${error.message}`);
           this.storageService.clear();
