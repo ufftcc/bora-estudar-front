@@ -7,6 +7,7 @@ import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/mat
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatToolbar } from '@angular/material/toolbar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-root',
@@ -34,6 +35,7 @@ export class AppComponent implements OnInit {
   showBackIcon = false;
   @ViewChild('snav') sidenav!: MatSidenav;
 
+  private snackBar = inject(MatSnackBar);
   private authService = inject(AuthService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
@@ -68,6 +70,12 @@ export class AppComponent implements OnInit {
         console.log(data);
         this.router.navigateByUrl('/login');
         this.close();
+
+        this.snackBar.open(
+          'Desconectado com sucesso!',
+          '',
+          { duration: 5000 }
+        );
       },
       error: (error) => {
         console.log(error);
