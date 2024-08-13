@@ -74,7 +74,7 @@ export class AppComponent implements OnInit {
         this.snackBar.open(
           'Desconectado com sucesso!',
           '',
-          { duration: 5000 }
+          { duration: 2500 }
         );
       },
       error: (error) => {
