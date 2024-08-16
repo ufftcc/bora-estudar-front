@@ -134,8 +134,8 @@ export class StudyCreateGroupComponent implements OnInit {
         console.log('Grupo de estudo criado com sucesso:', response);
         this.snackBar.open(
           'Grupo de estudo criado com sucesso!',
-          '',
-          { duration: 5000 }
+          'X',
+          { duration: 2500 }
         );
         this.router.navigate(['/my-study-group']);
       },

@@ -20,7 +20,7 @@
   </div>
 
   <div>
-    <p>Dias da Semana</p>
+    <p><strong>Dias da Semana</strong></p>
     <mat-chip-set>
       <mat-chip *ngFor="let day of diasSemana" [ngClass]="{'selected': studyGroup.daysOfWeek.includes(day)}">
         <p [ngClass]="{'selectedText': studyGroup.daysOfWeek.includes(day)}" style="margin-top: 12px;">{{ day | titlecase }}</p>
