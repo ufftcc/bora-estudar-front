@@ -152,8 +152,8 @@ export class StudyUpdateGroupComponent implements OnInit {
 
         this.snackBar.open(
           'Grupo de estudo editado com sucesso!',
-          '',
-          { duration: 5000 }
+          'X',
+          { duration: 2500 }
         );
         this.router.navigate(['/my-study-group']);
       },

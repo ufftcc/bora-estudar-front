@@ -138,8 +138,8 @@ export class StudyCreateGroupComponent implements OnInit {
 
         this.snackBar.open(
           'Grupo de estudo criado com sucesso!',
-          '',
-          { duration: 5000 }
+          'X',
+          { duration: 2500 }
         );
         this.router.navigate([`/detail`]);
       },

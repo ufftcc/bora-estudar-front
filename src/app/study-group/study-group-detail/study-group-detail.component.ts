@@ -95,8 +95,8 @@ export class StudyGroupDetailComponent implements OnInit {
           console.error(resposta);
           this.snackBar.open(
             'Entrou no grupo com sucesso!',
-            '',
-            { duration: 5000 }
+            'X',
+            { duration: 2500 }
           );
           this.close();
           this.router.navigate(['/my-study-group']);
@@ -122,7 +122,7 @@ export class StudyGroupDetailComponent implements OnInit {
           this.close();
           this.snackBar.open(
             'Saiu do grupo com sucesso!',
-            '',
+            'X',
             { duration: 5000 }
           );
           this.router.navigate(['/search']);

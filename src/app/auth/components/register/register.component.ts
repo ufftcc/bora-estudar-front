@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
   private onSuccess() {
     this.snackBar.open(
       'Registrado com sucesso! Por favor, acesse seu e-mail para confirmar sua conta.',
-      '',
+      'X',
       { duration: 5000 }
     );
     this.signupForm.reset();
@@ -82,7 +82,7 @@ export class RegisterComponent implements OnInit {
   }
 
   private onError() {
-    this.snackBar.open('Erro ao cadastrar.', '', { duration: 10000 });
+    this.snackBar.open('Erro ao cadastrar.', 'X', { duration: 10000 });
   }
 
   private reloadPage(): void {
