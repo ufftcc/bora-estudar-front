@@ -53,7 +53,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class StudyGroupDetailComponent implements OnInit {
   studyGroup: any;
   diasSemana = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
-  groupId!: number;
   userInGroup!: boolean;
   isOwnerId!: boolean;
   loading: boolean = false;
@@ -62,14 +61,13 @@ export class StudyGroupDetailComponent implements OnInit {
     private snackBar: MatSnackBar,
     private router: Router,
     public service: StudyGroupService,
-    private messageService: MessageService,
-    @Inject(MAT_DIALOG_DATA) public data: { id: any },
-    private dialogRef: MatDialogRef<StudyGroupDetailComponent>) {
-    this.studyGroup = data.id;
-    this.groupId = data.id.id;
+    private route: ActivatedRoute,
+    private messageService: MessageService) {
   }
 
   ngOnInit() {
+    this.studyGroup = this.service.getStudyGroup();
+    console.error('on init', this.studyGroup)
     const idUsuario = localStorage.getItem('idUsuario');
     const id = Number(idUsuario);
 
@@ -83,7 +81,7 @@ export class StudyGroupDetailComponent implements OnInit {
   }
 
   close(): void {
-    this.dialogRef.close();
+    // this.dialogRef.close();
   }
 
   joinGroup() {
@@ -92,7 +90,7 @@ export class StudyGroupDetailComponent implements OnInit {
 
     if (idUsuario !== null) {
       const id = Number(idUsuario);
-      this.service.joinGroupService(this.groupId, id).subscribe({
+      this.service.joinGroupService(this.studyGroup.id, id).subscribe({
         next: (resposta) => {
           console.error(resposta);
           this.snackBar.open(
@@ -119,10 +117,8 @@ export class StudyGroupDetailComponent implements OnInit {
 
     if (idUsuario !== null) {
       const id = Number(idUsuario);
-      this.service.leaveGroupService(this.groupId, id).subscribe({
+      this.service.leaveGroupService(this.studyGroup.id, id).subscribe({
         next: (resposta) => {
-          console.error(resposta);
-
           this.close();
           this.snackBar.open(
             'Saiu do grupo com sucesso!',
@@ -135,7 +131,13 @@ export class StudyGroupDetailComponent implements OnInit {
           }, 10);
         },
         error: (error) => {
-          console.error('Erro ao entrar no grupo:', error);
+          console.error('Erro ao sair do grupo:', error);
+          this.loading = false;
+          this.snackBar.open(
+            'Erro ao sair do grupo!',
+            '',
+            { duration: 5000 }
+          );
         }
       });
     } else {

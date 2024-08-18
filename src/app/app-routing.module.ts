@@ -10,6 +10,7 @@ import { StudyGroupDetailComponent } from './study-group/study-group-detail/stud
 import { StudyCreateGroupComponent } from './study-group/study-create-group/study-create-group.component';
 import { MyStudyGroupComponent } from './study-group/my-study-group/my-study-group.component';
 import { StudyUpdateGroupComponent } from './study-group/study-update-group/study-update-group.component';
+import { StudyGroupAssociateComponent } from './study-group/study-group-associate/study-group-associate.component';
 
 const routes: Routes = [
   {
@@ -28,9 +29,10 @@ const routes: Routes = [
     children: [
       { path: 'search', component: StudyGroupSearchBarComponent },
       { path: 'create', component: StudyCreateGroupComponent },
-      { path: 'study-group/:groupId', component: StudyGroupDetailComponent },
+      { path: 'detail', component: StudyGroupDetailComponent },
       { path: 'my-study-group', component: MyStudyGroupComponent },
       { path: 'edit', component: StudyUpdateGroupComponent },
+      { path: 'associate', component: StudyGroupAssociateComponent },
     ],
   },
 ];

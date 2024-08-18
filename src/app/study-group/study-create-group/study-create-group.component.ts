@@ -49,7 +49,6 @@ export class StudyCreateGroupComponent implements OnInit {
   formulario!: UntypedFormGroup;
   options: any[] = [];
   filteredOptions!: any[];
-  loading: boolean = false;
   @ViewChild('input') input!: ElementRef<HTMLInputElement>;
 
   protected daysOfWeek: { id: number; name: string }[] = [
@@ -127,20 +126,24 @@ export class StudyCreateGroupComponent implements OnInit {
       modality: this.formulario?.value.modality
     };
 
-    this.loading = true;
-
     this.service.createStudyGroup(studyGroupData).subscribe(
       response => {
-        console.log('Grupo de estudo criado com sucesso:', response);
+        console.error('Grupo de estudo criado com sucesso:', response);
+
+        // Aplicar o mapeamento ao response
+        const mappedStudyGroup = this.service.mappingStudyGroup(response);
+
+        // Passar o grupo mapeado para o service
+        this.service.setStudyGroup(mappedStudyGroup);
+
         this.snackBar.open(
           'Grupo de estudo criado com sucesso!',
           '',
           { duration: 5000 }
         );
-        this.router.navigate(['/my-study-group']);
+        this.router.navigate([`/detail`]);
       },
-        error => {
-        this.loading = false;
+      error => {
         console.error('Erro ao criar grupo de estudo:', error);
       }
     );

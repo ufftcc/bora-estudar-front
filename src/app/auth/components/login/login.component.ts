@@ -60,10 +60,19 @@ export class LoginComponent implements OnInit {
     };
 
     this.authService.login(body).subscribe({
-      next: (data) => {
+      next: (data: any) => {
+        console.error('login', data)
         const idUsuario = data.id.toString();
         localStorage.setItem('idUsuario', idUsuario);
+        const isDiscordAssociate = data.isDiscordAssociate;
+
         this.router.navigateByUrl('/search');
+
+        // if(isDiscordAssociate){
+        //   this.router.navigateByUrl('/search');
+        // } else {
+        //   this.router.navigateByUrl('/associate');
+        // }
       },
       error: (error) => {
         console.log(error);

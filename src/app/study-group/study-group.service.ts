@@ -13,6 +13,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class StudyGroupService {
+  private studyGroupParam: any;
   studyGroups: StudyGroup[] = [];
   myStudyGroups: StudyGroup[] = [];
   subjects: any[] = [];
@@ -45,7 +46,7 @@ export class StudyGroupService {
     );;
   }
 
-  private mappingStudyGroup(item: any): any {
+  public mappingStudyGroup(item: any): any {
     const {
       id,
       description,
@@ -123,5 +124,13 @@ export class StudyGroupService {
 
   editStudyGroup(studyGroupData: any, groupId: number): Observable<any> {
     return this.http.put<any>(`${AUTH_API}/study-groups/${groupId}`, studyGroupData);
+  }
+
+  setStudyGroup(data: any) {
+    this.studyGroupParam = data;
+  }
+
+  getStudyGroup() {
+    return this.studyGroupParam;
   }
 }

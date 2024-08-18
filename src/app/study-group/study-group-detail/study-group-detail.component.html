@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" position="start" class="header_toolbar">
+<!-- <mat-toolbar color="primary" position="start" class="header_toolbar">
   <button mat-icon-button (click)="close()">
     <mat-icon>arrow_back</mat-icon>
   </button>
@@ -8,11 +8,11 @@
   <span>Detalhes</span>
 
   <span class="spacer"></span>
-</mat-toolbar>
+</mat-toolbar> -->
 
 <div class="allGrid m-top">
-  <mat-card-title>{{ studyGroup.code + ' - ' + studyGroup.title }}</mat-card-title>
-  <mat-card-subtitle>{{ studyGroup.shortDescription }}</mat-card-subtitle>
+  <mat-card-title class="titulo">{{ studyGroup.code + ' - ' + studyGroup.title }}</mat-card-title>
+  <mat-card-subtitle class="subTitulo">{{ studyGroup.shortDescription }}</mat-card-subtitle>
 
   <div class="allBetween m-top">
     <p><strong>Alunos:</strong> {{ studyGroup.participants }}</p>
@@ -37,7 +37,6 @@
       @if(this.isOwnerId === true){
         <button mat-raised-button color="primary" class="full_width mtop" (click)="editGroup()">Editar</button>
       }
-
       <button mat-raised-button class="full_width mtop" (click)="leaveGroup()">Sair</button>
     } @else {
       <button mat-raised-button color="primary" class="full_width mtop" (click)="joinGroup()">Entrar</button>

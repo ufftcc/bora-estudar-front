@@ -37,13 +37,12 @@ export class AppComponent implements OnInit {
 
   private snackBar = inject(MatSnackBar);
   private authService = inject(AuthService);
-  private router = inject(Router);
+  public router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
   constructor() {}
 
   ngOnInit(): void {
-    console.log('App component');
     this.authService.isLoggedIn().subscribe((isLoggedIn) => {
       this.isLoggedIn = isLoggedIn;
       this.cdr.detectChanges();

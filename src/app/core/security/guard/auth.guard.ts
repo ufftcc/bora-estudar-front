@@ -61,5 +61,17 @@ export const authGuard: CanActivateFn = (
     router.navigateByUrl('/login');
     return false;
   }
+
+  const signed = localStorage.getItem('signed-user');
+
+  // if (signed) {
+  //   const signedUser = JSON.parse(signed);
+  //   const isDiscordAssociate = signedUser.isDiscordAssociate;
+  //   if(!isDiscordAssociate){
+  //     router.navigateByUrl('/associate');
+  //   }
+  // } else {
+  //   console.error('Usuário não encontrado no localStorage');
+  // }
   return true;
 };
