@@ -139,19 +139,24 @@ export class StudyGroupDetailComponent implements OnInit {
     const idDetail = idParam ? Number(idParam) : null;
 
     if (idDetail !== null) {
-      this.service.getStudyGroupId(idDetail).subscribe((response) =>{
-        const mappedStudyGroup = this.service.mappingStudyGroup(response);
-        this.studyGroup = mappedStudyGroup;
+      this.service.getStudyGroupId(idDetail).subscribe({
+        next: (response) => {
+          const mappedStudyGroup = this.service.mappingStudyGroup(response);
+          this.studyGroup = mappedStudyGroup;
 
-        const idUsuario = localStorage.getItem('idUsuario');
-        const id = Number(idUsuario);
+          const idUsuario = localStorage.getItem('idUsuario');
+          const id = Number(idUsuario);
 
-        if (this.studyGroup && Array.isArray(this.studyGroup.students)) {
-          const isStudentInGroup = this.studyGroup.students.some((student: any) => student.id === id);
-          this.userInGroup = isStudentInGroup;
+          if (this.studyGroup && Array.isArray(this.studyGroup.students)) {
+            const isStudentInGroup = this.studyGroup.students.some((student: any) => student.id === id);
+            this.userInGroup = isStudentInGroup;
 
-          const isOwner = this.studyGroup.ownerId === id;
-          this.isOwnerId = isOwner;
+            const isOwner = this.studyGroup.ownerId === id;
+            this.isOwnerId = isOwner;
+          }
+        },
+        error: (error) => {
+          this.router.navigate([`/search`]);
         }
       })
     }

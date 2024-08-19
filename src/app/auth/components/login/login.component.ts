@@ -64,15 +64,15 @@ export class LoginComponent implements OnInit {
         console.error('login', data)
         const idUsuario = data.id.toString();
         localStorage.setItem('idUsuario', idUsuario);
-        const isDiscordAssociate = data.isDiscordAssociate;
+        let isDiscordAssociate = data.isDiscordAssociate;
+        console.error('isDiscordAssociate', isDiscordAssociate)
+        // this.router.navigateByUrl('/search');
 
-        this.router.navigateByUrl('/search');
-
-        // if(isDiscordAssociate){
-        //   this.router.navigateByUrl('/search');
-        // } else {
-        //   this.router.navigateByUrl('/associate');
-        // }
+        if(isDiscordAssociate === true){
+          this.router.navigateByUrl('/search');
+        } else {
+          this.router.navigateByUrl('/associate');
+        }
       },
       error: (error) => {
         console.log(error);

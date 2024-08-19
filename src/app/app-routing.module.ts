@@ -5,7 +5,7 @@ import { LoginComponent } from './auth/components/login/login.component';
 import { EmailConfirmComponent } from './auth/components/email-confirm/email-confirm.component';
 import { StudyGroupSearchBarComponent } from './study-group/study-group-search-bar/study-group-search.component';
 import { PasswordRecoveryComponent } from './auth/components/password-recovery/password-recovery.component';
-import { authGuard, loggedInGuard } from './core/security/guard/auth.guard';
+import { authGuard, discordAssociateGuard, loggedInGuard } from './core/security/guard/auth.guard';
 import { StudyGroupDetailComponent } from './study-group/study-group-detail/study-group-detail.component';
 import { StudyCreateGroupComponent } from './study-group/study-create-group/study-create-group.component';
 import { MyStudyGroupComponent } from './study-group/my-study-group/my-study-group.component';

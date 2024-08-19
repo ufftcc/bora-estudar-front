@@ -62,16 +62,36 @@ export const authGuard: CanActivateFn = (
     return false;
   }
 
+  return true;
+};
+
+/**
+ * A guard that prevents access to a route if the user is already logged in.
+ * If the user is logged in, it redirects to the '/search' route.
+ * If the user is not logged in, it allows access to the route.
+ * @param _route - The activated route snapshot.
+ * @param _state - The router state snapshot.
+ * @returns A boolean or UrlTree indicating whether to allow or deny access to the route.
+ */
+export const discordAssociateGuard: CanActivateFn = (
+  _route: ActivatedRouteSnapshot,
+  _state: RouterStateSnapshot
+): boolean | UrlTree => {
+  console.log('The discordAssociateGuard is being called correctly');
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
   const signed = localStorage.getItem('signed-user');
 
-  // if (signed) {
-  //   const signedUser = JSON.parse(signed);
-  //   const isDiscordAssociate = signedUser.isDiscordAssociate;
-  //   if(!isDiscordAssociate){
-  //     router.navigateByUrl('/associate');
-  //   }
-  // } else {
-  //   console.error('Usuário não encontrado no localStorage');
-  // }
+  if (signed) {
+    const signedUser = JSON.parse(signed);
+    const isDiscordAssociate = signedUser.isDiscordAssociate;
+    if(!isDiscordAssociate){
+      router.navigateByUrl('/associate');
+    }
+  } else {
+    console.error('Usuário não encontrado no localStorage');
+  }
+  // router.navigateByUrl('/search');
   return true;
 };

@@ -8,6 +8,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Location } from '@angular/common'
+import { NavigationServiceService } from './study-group/navigation-service.service';
 
 @Component({
     selector: 'app-root',
@@ -39,8 +41,11 @@ export class AppComponent implements OnInit {
   private authService = inject(AuthService);
   public router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private navigationService = inject(NavigationServiceService);
 
-  constructor() {}
+  constructor(
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn) => {
@@ -100,6 +105,16 @@ export class AppComponent implements OnInit {
   navigateToSearch(): void {
     this.router.navigate(['/search']);
   }
+
+  // navigateToSearch(): void {
+  //   const previousUrl = this.navigationService.getPreviousUrl();
+
+  //   if (previousUrl) {
+  //       this.router.navigate([previousUrl]);
+  //   } else {
+  //       this.router.navigate(['/home']);
+  //   }
+  // }
 
   close(){
     if (this.sidenav) {

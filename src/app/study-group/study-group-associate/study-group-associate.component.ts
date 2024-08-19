@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
+import { StudyGroupService } from '../study-group.service';
 
 @Component({
   selector: 'app-study-group-associate',
@@ -10,6 +11,18 @@ import { MatButton } from '@angular/material/button';
   templateUrl: './study-group-associate.component.html',
   styleUrl: './study-group-associate.component.scss'
 })
-export class StudyGroupAssociateComponent {
+export class StudyGroupAssociateComponent implements OnInit {
+
+  constructor(
+    public service: StudyGroupService){}
+
+  ngOnInit(): void {
+
+  }
+
+  associate() {
+    const url = 'https://discord.com/oauth2/authorize?client_id=1237632955145257021&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fdiscord&scope=identify';
+    window.open(url, '_blank');
+  }
 
 }
