@@ -29,7 +29,7 @@ const routes: Routes = [
     children: [
       { path: 'search', component: StudyGroupSearchBarComponent },
       { path: 'create', component: StudyCreateGroupComponent },
-      { path: 'detail', component: StudyGroupDetailComponent },
+      { path: 'detail/:groupId', component: StudyGroupDetailComponent },
       { path: 'my-study-group', component: MyStudyGroupComponent },
       { path: 'edit', component: StudyUpdateGroupComponent },
       { path: 'associate', component: StudyGroupAssociateComponent },

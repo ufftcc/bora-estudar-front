@@ -57,6 +57,8 @@ export class AppComponent implements OnInit {
         this.appName = 'Meus Grupos';
       } else if(this.router.url.startsWith('/edit')){
         this.appName = 'Editar';
+      } else if(this.router.url.startsWith('/detail')){
+        this.appName = 'Detalhes';
       } else {
         this.appName = 'Bora Estudar UFF';
       }

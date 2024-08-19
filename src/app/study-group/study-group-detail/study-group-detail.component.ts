@@ -67,42 +67,27 @@ export class StudyGroupDetailComponent implements OnInit {
 
   ngOnInit() {
     this.studyGroup = this.service.getStudyGroup();
-    console.error('on init', this.studyGroup)
-    const idUsuario = localStorage.getItem('idUsuario');
-    const id = Number(idUsuario);
-
-    if (this.studyGroup && Array.isArray(this.studyGroup.students)) {
-      const isStudentInGroup = this.studyGroup.students.some((student: any) => student.id === id);
-      this.userInGroup = isStudentInGroup;
-
-      const isOwner = this.studyGroup.ownerId === id;
-      this.isOwnerId = isOwner;
-    }
-  }
-
-  close(): void {
-    // this.dialogRef.close();
+    this.callGroup();
   }
 
   joinGroup() {
     const idUsuario = localStorage.getItem('idUsuario');
-    this.loading = true;
 
     if (idUsuario !== null) {
       const id = Number(idUsuario);
       this.service.joinGroupService(this.studyGroup.id, id).subscribe({
-        next: (resposta) => {
-          console.error(resposta);
+        next: (response) => {
           this.snackBar.open(
             'Entrou no grupo com sucesso!',
             'X',
             { duration: 2500 }
           );
-          this.close();
-          this.router.navigate(['/my-study-group']);
+
+          this.loading = false;
+
+          this.callGroup();
         },
         error: (error) => {
-          this.loading = false;
           console.error('Erro ao entrar no grupo:', error);
         }
       });
@@ -119,16 +104,14 @@ export class StudyGroupDetailComponent implements OnInit {
       const id = Number(idUsuario);
       this.service.leaveGroupService(this.studyGroup.id, id).subscribe({
         next: (resposta) => {
-          this.close();
           this.snackBar.open(
             'Saiu do grupo com sucesso!',
             'X',
             { duration: 5000 }
           );
-          this.router.navigate(['/search']);
-          setTimeout(() => {
-            this.router.navigate(['/my-study-group']);
-          }, 10);
+          this.loading = false;
+
+          this.callGroup();
         },
         error: (error) => {
           console.error('Erro ao sair do grupo:', error);
@@ -146,10 +129,31 @@ export class StudyGroupDetailComponent implements OnInit {
   }
 
   editGroup(){
-    this.close();
-
     if (this.studyGroup) {
       this.router.navigate(['/edit'], { queryParams: { id: this.studyGroup.id } });
+    }
+  }
+
+  callGroup(){
+    const idParam = this.route.snapshot.paramMap.get('groupId');
+    const idDetail = idParam ? Number(idParam) : null;
+
+    if (idDetail !== null) {
+      this.service.getStudyGroupId(idDetail).subscribe((response) =>{
+        const mappedStudyGroup = this.service.mappingStudyGroup(response);
+        this.studyGroup = mappedStudyGroup;
+
+        const idUsuario = localStorage.getItem('idUsuario');
+        const id = Number(idUsuario);
+
+        if (this.studyGroup && Array.isArray(this.studyGroup.students)) {
+          const isStudentInGroup = this.studyGroup.students.some((student: any) => student.id === id);
+          this.userInGroup = isStudentInGroup;
+
+          const isOwner = this.studyGroup.ownerId === id;
+          this.isOwnerId = isOwner;
+        }
+      })
     }
   }
 }

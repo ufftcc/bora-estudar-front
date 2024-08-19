@@ -130,10 +130,8 @@ export class StudyCreateGroupComponent implements OnInit {
       response => {
         console.error('Grupo de estudo criado com sucesso:', response);
 
-        // Aplicar o mapeamento ao response
         const mappedStudyGroup = this.service.mappingStudyGroup(response);
 
-        // Passar o grupo mapeado para o service
         this.service.setStudyGroup(mappedStudyGroup);
 
         this.snackBar.open(
@@ -141,7 +139,7 @@ export class StudyCreateGroupComponent implements OnInit {
           'X',
           { duration: 2500 }
         );
-        this.router.navigate([`/detail`]);
+        this.router.navigate([`/detail/${response.id}`]);
       },
       error => {
         console.error('Erro ao criar grupo de estudo:', error);

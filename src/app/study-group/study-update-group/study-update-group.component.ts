@@ -155,7 +155,7 @@ export class StudyUpdateGroupComponent implements OnInit {
           'X',
           { duration: 2500 }
         );
-        this.router.navigate(['/my-study-group']);
+        this.router.navigate([`/detail/${response.id}`]);
       },
       error => {
         this.loading = false;

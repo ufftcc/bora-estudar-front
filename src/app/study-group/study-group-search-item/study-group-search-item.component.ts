@@ -36,7 +36,7 @@ export class StudyGroupSearchItemComponent {
 
   openDetalheDialog(studyGroup: any): void {
     this.service.setStudyGroup(studyGroup);
-    this.router.navigate([`/detail`]);
+    this.router.navigate([`/detail/${studyGroup.id}`]);
 
     // let dialogRef = this.dialog.open(StudyGroupDetailComponent, {
     //   maxWidth: '100vw',
