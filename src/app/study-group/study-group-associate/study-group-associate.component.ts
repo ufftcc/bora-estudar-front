@@ -22,8 +22,8 @@ export class StudyGroupAssociateComponent implements OnInit {
 
   associate() {
     const idUsuario = localStorage.getItem('idUsuario');
-    const url = `https://discord.com/oauth2/authorize?client_id=1237632955145257021&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fdiscord%2Fusers%2F${idUsuario}&scope=identify`;
-    window.open(url, '_blank');
+    const url = `https://discord.com/oauth2/authorize?client_id=1237632955145257021&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fdiscord%2Fusers&scope=identify&state=${idUsuario}`;
+    https: window.open(url, '_blank');
   }
 
 }
