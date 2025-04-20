@@ -17,6 +17,8 @@ import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-study-create-group',
@@ -39,12 +41,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatButton,
     MatAutocompleteModule,
     ToastModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
   ],
   templateUrl: './study-create-group.component.html',
   styleUrl: './study-create-group.component.scss',
-  providers: [MessageService]
+  providers: [MessageService],
 })
+
 export class StudyCreateGroupComponent implements OnInit {
   formulario!: UntypedFormGroup;
   options: any[] = [];
@@ -75,7 +78,8 @@ export class StudyCreateGroupComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     public service: StudyGroupService,
-    private builder: UntypedFormBuilder) {
+    private builder: UntypedFormBuilder
+  ) {
     this.formulario = this.builder.group({
       title: [''],
       description: [''],
@@ -83,9 +87,9 @@ export class StudyCreateGroupComponent implements OnInit {
       subject: [''],
       maxStudents: [''],
       meetingTime: [''],
-      modality: ["REMOTE"],
-      weekdays: ['']
-    })
+      modality: ['REMOTE'],
+      weekdays: [''],
+    });
   }
 
   ngOnInit(): void {
@@ -94,26 +98,35 @@ export class StudyCreateGroupComponent implements OnInit {
       this.service.subjects = dados;
       this.options = dados;
       this.filteredOptions = this.options.slice();
-    })
+    });
   }
 
   filter(): void {
     const filterValue = this.input.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.service.subjects.filter(option =>
-      option.id.toString().includes(filterValue) || option.name.toLowerCase().includes(filterValue) || option.code.toLowerCase().includes(filterValue)
+    this.filteredOptions = this.service.subjects.filter(
+      (option) =>
+        option.id.toString().includes(filterValue) ||
+        option.name.toLowerCase().includes(filterValue) ||
+        option.code.toLowerCase().includes(filterValue)
     );
   }
 
   onOptionSelected(option: any): void {
     this.formulario.get('subject')?.patchValue(option);
-    this.formulario.get('campoOculto')?.patchValue(option.code + ' - ' + option.name);
+    this.formulario
+      .get('campoOculto')
+      ?.patchValue(option.code + ' - ' + option.name);
   }
 
-  createGroups(){
+  private subscription: Subscription | null = null;
+
+  createGroups() {
     const idUsuario = localStorage.getItem('idUsuario');
     const id = Number(idUsuario);
-    const title = this.formulario?.value.subject.code + " " + this.formulario?.value.subject.name;
-    console.error(title)
+    const title =
+      this.formulario?.value.subject.code +
+      ' ' +
+      this.formulario?.value.subject.name;
 
     const studyGroupData = {
       title: title,
@@ -123,27 +136,30 @@ export class StudyCreateGroupComponent implements OnInit {
       weekdays: this.formulario?.value.weekdays,
       meetingTime: this.formulario?.value.meetingTime,
       maxStudents: this.formulario?.value.maxStudents,
-      modality: this.formulario?.value.modality
+      modality: this.formulario?.value.modality,
     };
 
-    this.service.createStudyGroup(studyGroupData).subscribe(
-      response => {
-        console.error('Grupo de estudo criado com sucesso:', response);
+    this.subscription = this.service
+      .createStudyGroup(studyGroupData)
+      .subscribe({
+        next: (response) => {
+          console.error('Grupo de estudo criado com sucesso:', response);
 
-        const mappedStudyGroup = this.service.mappingStudyGroup(response);
+          const mappedStudyGroup = this.service.mappingStudyGroup(response);
+          this.service.setStudyGroup(mappedStudyGroup);
 
-        this.service.setStudyGroup(mappedStudyGroup);
+          this.snackBar.open('Grupo de estudo criado com sucesso!', 'X', {
+            duration: 2500,
+          });
+          this.router.navigate([`/detail/${response.id}`]);
+        },
+        error: (error) => {
+          console.error('Erro ao criar grupo de estudo:', error);
+        },
+      });
+  }
 
-        this.snackBar.open(
-          'Grupo de estudo criado com sucesso!',
-          'X',
-          { duration: 2500 }
-        );
-        this.router.navigate([`/detail/${response.id}`]);
-      },
-      error => {
-        console.error('Erro ao criar grupo de estudo:', error);
-      }
-    );
+  ngOnDestroy() {
+    this.subscription?.unsubscribe(); // Cancela a assinatura ao destruir o componente
   }
 }
