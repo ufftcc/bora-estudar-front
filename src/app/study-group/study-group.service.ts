@@ -58,6 +58,7 @@ export class StudyGroupService {
       modality,
       weekdays,
       ownerId,
+      discordInviteUrl
     } = item;
 
     // const shortDescription =
@@ -99,6 +100,7 @@ export class StudyGroupService {
       daysOfWeek: weekdays.map((day: { name: string }) =>
         day.name.toLowerCase().substring(0, 3)
       ),
+      discordInviteUrl: discordInviteUrl
     };
   }
 
