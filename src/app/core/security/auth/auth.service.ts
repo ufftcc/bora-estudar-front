@@ -5,8 +5,9 @@ import { SigninBody } from 'src/app/auth/models/signin-body';
 import { SignupBody } from 'src/app/auth/models/signup-body';
 import { UserResponseBasicDto } from 'src/app/shared/models/user/user-response-basic-dto';
 import { StorageService } from './storage.service';
+import { environment } from '../../../../environments/environment';
 
-const AUTH_API = '';
+const AUTH_API = environment.authApi;
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
