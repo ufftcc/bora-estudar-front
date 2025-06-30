@@ -55,7 +55,7 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(AUTH_API + 'signout', {}, httpOptions).pipe(
+    return this.http.post(AUTH_API + '/signout', {}, httpOptions).pipe(
       tap(() => {
         this.storageService.clear();
       }),

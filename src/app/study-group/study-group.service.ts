@@ -2,8 +2,9 @@ import { catchError, map, Observable, of, tap } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StudyGroup } from './study-group';
+import { environment } from 'src/environments/environment';
 
-const AUTH_API = '';
+const AUTH_API = environment.authApi;
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
