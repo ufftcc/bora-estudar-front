@@ -6,7 +6,7 @@ import { SignupBody } from 'src/app/auth/models/signup-body';
 import { UserResponseBasicDto } from 'src/app/shared/models/user/user-response-basic-dto';
 import { StorageService } from './storage.service';
 
-const AUTH_API = '/api';
+const AUTH_API = '';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

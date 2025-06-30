@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StudyGroup } from './study-group';
 
-const AUTH_API = '/api';
+const AUTH_API = '';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
