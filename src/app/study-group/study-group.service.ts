@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StudyGroup } from './study-group';
 import { environment } from 'src/environments/environment';
 
-const AUTH_API = environment.authApi;
+const AUTH_API = '';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

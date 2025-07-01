@@ -7,7 +7,7 @@ import { UserResponseBasicDto } from 'src/app/shared/models/user/user-response-b
 import { StorageService } from './storage.service';
 import { environment } from '../../../../environments/environment';
 
-const AUTH_API = environment.authApi;
+const AUTH_API = '';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
