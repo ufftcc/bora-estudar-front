@@ -1,14 +1,14 @@
 <div class="container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{ studyGroup.title }}</mat-card-title>
-      <mat-card-subtitle>{{ studyGroup.shortDescription }}</mat-card-subtitle>
+      <mat-card-title class="study_group_item_title limited-title" matTooltip="{{ studyGroup.title }}">{{ studyGroup.title }}</mat-card-title>
+      <mat-card-subtitle class="limited-subtitle" matTooltip="{{ studyGroup.shortDescription }}">{{ studyGroup.shortDescription }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <p>
+      <!-- <p>
         <strong>Monitor:</strong>
         {{ studyGroup.monitor }}
-      </p>
+      </p> -->
       <p>
         <strong>Alunos:</strong>
         {{ studyGroup.participants }}

@@ -2,8 +2,14 @@
   position: fixed;
 }
 
-h1.app_name {
-  margin-left: 8px;
+.app_name {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* Ajuste o top/transform se necessário para alinhar verticalmente */
 }
 
 .sidenav_container {
@@ -35,4 +41,17 @@ h1.app_name {
 
 ::ng-deep .p-progress-spinner-circle {
   stroke: #3f51b5 !important;
+}
+
+.user-name-toolbar {
+  font-size: 14px;
+  color: white;
+  font-weight: 500;
+  padding: 8px 12px;
+}
+
+@media (max-width: 768px) {
+  .user-name-toolbar {
+    display: none;
+  }
 }

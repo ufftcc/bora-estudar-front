@@ -7,6 +7,7 @@ import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/mat
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatToolbar } from '@angular/material/toolbar';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common'
 import { NavigationServiceService } from './study-group/navigation-service.service';
@@ -27,6 +28,9 @@ import { NavigationServiceService } from './study-group/navigation-service.servi
         RouterLink,
         MatSidenavContent,
         RouterOutlet,
+        MatMenu,
+        MatMenuItem,
+        MatMenuTrigger,
     ],
 })
 export class AppComponent implements OnInit {
@@ -50,6 +54,9 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe((isLoggedIn) => {
       this.isLoggedIn = isLoggedIn;
+      if (isLoggedIn) {
+        this.getUser();
+      }
       this.cdr.detectChanges();
     });
 

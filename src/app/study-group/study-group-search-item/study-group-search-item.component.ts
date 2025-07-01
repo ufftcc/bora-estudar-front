@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { StudyGroup } from '../study-group';
 import { Router, RouterLink } from '@angular/router';
 import { MatButton } from '@angular/material/button';
@@ -25,6 +26,7 @@ import { StudyGroupService } from '../study-group.service';
         MatButton,
         RouterLink,
         TitleCasePipe,
+        MatTooltipModule,
     ],
 })
 export class StudyGroupSearchItemComponent {

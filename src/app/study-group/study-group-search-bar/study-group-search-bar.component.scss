@@ -11,6 +11,13 @@
   gap: 1%;
 }
 
+.search_row_2 {
+  display: flex;
+  height: 56px;
+  width: 100%;
+  gap: 1%;
+}
+
 .search_row_search_bar {
   height: 100%;
   width: 70%;
@@ -25,20 +32,20 @@
   margin: 0px !important;
 }
 
-.position{
+.position {
   justify-content: center;
   display: flex;
   margin-top: 15px;
   padding: 0 5px;
 }
 
-::ng-deep .cdk-overlay-pane{
-  .mat-mdc-menu-panel{
+::ng-deep .cdk-overlay-pane {
+  .mat-mdc-menu-panel {
     max-width: fit-content;
   }
 }
 
-.pesquisarButton{
+.pesquisarButton {
   margin: 10px;
   color: white !important;
   background: #3f51b5;
@@ -46,7 +53,7 @@
   height: 50px;
 }
 
-.fabButton{
+.fabButton {
   left: 80%;
   border-radius: 14px;
   position: fixed;
@@ -59,6 +66,29 @@
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, .2), 0px 6px 10px 0px rgba(0, 0, 0, .14), 0px 1px 18px 0px rgba(0, 0, 0, .12);
 }
 
-.input6{
+.input6 {
   width: 6rem;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  padding: 16px;
+  gap: 0;
+}
+
+@media (min-width: 768px) {
+
+  .search_row_2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    height: 56px;
+    width: 100%;
+    gap: 1%;
+  }
 }

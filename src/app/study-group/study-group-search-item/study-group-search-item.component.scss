@@ -1,32 +1,46 @@
-.container {
-  width: 100%;
-  /* height: 100vh; */
-  /* background-color: #fafafa; */
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  /* align-items: center; */
-}
-
+// Limita a altura do título e esconde excesso de texto após 2 linhas
 mat-card {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  width: 100%;
-  max-width: 350px;
-  min-width: 300px;
-  padding: 20px 10px;
+  width: 320px;
+  height: 345px;
+  max-height: 345px;
+  margin: 12px;
+  padding: 16px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  /* Impede que o card encolha */
 }
 
-mat-card {
-  margin: 10px;
+.limited-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3.2em; // Aproximadamente 2 linhas, ajuste conforme o font-size
+  line-height: 1.6em;
+  white-space: normal;
+}
+
+.limited-subtitle {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 2.6em;
+  line-height: 1.6em;
+  white-space: normal;
 }
 
 mat-chip {
   margin: 5px;
 }
 
-.full_width{
+.full_width {
   width: 100%;
 }
 
@@ -34,7 +48,7 @@ mat-chip {
   background-color: #3f51b5 !important;
 }
 
-.selectedText{
+.selectedText {
   color: white;
   margin-top: 12px;
 }

@@ -1,0 +1,9 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch; /* Faz todos os itens terem a mesma altura */
+  width: 100%;
+  padding: 16px;
+  gap: 0; /* Remove gap para controlar espaçamento via margin dos cards */
+}

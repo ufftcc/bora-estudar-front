@@ -2,10 +2,14 @@
   <div class="app_container">
     <mat-toolbar color="primary" position="start" class="header_toolbar">
 
-      @if (showBackIcon && isLoggedIn === true && this.router.url !== '/associate' ) {
-        <button mat-icon-button (click)="navigateToSearch()">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+      @if (isLoggedIn === true) {
+        @if (showBackIcon && this.router.url !== '/associate' ) {
+          <button mat-icon-button (click)="navigateToSearch()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        }
+
+        <span class="user-name-toolbar">Seja bem vindo(a), {{ user?.name || 'Usuário' }}</span>
       }
 
       <span class="spacer"></span>
@@ -15,6 +19,15 @@
       <span class="spacer"></span>
 
       @if (isLoggedIn === true) {
+
+        <!-- Menu dropdown para logout -->
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Sair</span>
+          </button>
+        </mat-menu>
+
         <button mat-icon-button (click)="snav.toggle()">
           <mat-icon>menu</mat-icon>
         </button>

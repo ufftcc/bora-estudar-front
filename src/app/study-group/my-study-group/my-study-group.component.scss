@@ -11,6 +11,13 @@
   gap: 1%;
 }
 
+.search_row_2 {
+  display: flex;
+  height: 56px;
+  width: 100%;
+  gap: 1%;
+}
+
 .search_row_search_bar {
   height: 100%;
   width: 70%;
@@ -61,4 +68,27 @@
 
 .input6{
   width: 6rem;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  padding: 16px;
+  gap: 0;
+}
+
+@media (min-width: 768px) {
+
+  .search_row_2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    height: 56px;
+    width: 100%;
+    gap: 1%;
+  }
 }
