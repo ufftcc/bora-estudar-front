@@ -25,6 +25,11 @@ const routes: Routes = [
   { path: 'confirm', component: EmailConfirmComponent, canActivate: [loggedInGuard] },
   {
     path: '',
+    component: LoginComponent,
+    canActivate: [loggedInGuard],
+  },
+  {
+    path: '',
     canActivate: [authGuard],
     children: [
       { path: 'search', component: StudyGroupSearchBarComponent },
@@ -33,6 +38,7 @@ const routes: Routes = [
       { path: 'my-study-group', component: MyStudyGroupComponent },
       { path: 'edit', component: StudyUpdateGroupComponent },
       { path: 'associate', component: StudyGroupAssociateComponent },
+      { path: '', redirectTo: 'search', pathMatch: 'full' },
     ],
   },
 ];
