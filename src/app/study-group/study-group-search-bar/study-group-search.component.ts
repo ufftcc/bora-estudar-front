@@ -17,25 +17,25 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
 @Component({
-    selector: 'app-study-group-search-bar',
-    templateUrl: './study-group-search-bar.component.html',
-    styleUrl: './study-group-search-bar.component.scss',
-    standalone: true,
-    imports: [
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatButton,
-        MatIcon,
-        MatMenuModule,
-        MatCheckboxModule,
-        StudyGroupSearchListComponent,
-        NgFor,
-        StudyGroupSearchItemComponent,
-        MatAutocompleteModule,
-        ToastModule
-    ],
-    providers: [MessageService]
+  selector: 'app-study-group-search-bar',
+  templateUrl: './study-group-search-bar.component.html',
+  styleUrl: './study-group-search-bar.component.scss',
+  standalone: true,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatButton,
+    MatIcon,
+    MatMenuModule,
+    MatCheckboxModule,
+    StudyGroupSearchListComponent,
+    NgFor,
+    StudyGroupSearchItemComponent,
+    MatAutocompleteModule,
+    ToastModule,
+  ],
+  providers: [MessageService],
 })
 export class StudyGroupSearchBarComponent implements OnInit {
   options: any[] = [];
@@ -57,13 +57,15 @@ export class StudyGroupSearchBarComponent implements OnInit {
       this.service.studyGroups = dados;
       this.options = dados;
       this.filteredOptions = this.options.slice();
-    })
+    });
   }
 
   filter(): void {
     const filterValue = this.input.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.service.studyGroups.filter(option =>
-      option.title.toLowerCase().includes(filterValue) || option.code.toLowerCase().includes(filterValue)
+    this.filteredOptions = this.service.studyGroups.filter(
+      (option) =>
+        option.title.toLowerCase().includes(filterValue) ||
+        option.code.toLowerCase().includes(filterValue)
     );
   }
 
@@ -71,14 +73,18 @@ export class StudyGroupSearchBarComponent implements OnInit {
     const filterValue = this.input.nativeElement.value.toLowerCase();
 
     // Dividir o valor do filtro em partes, se necessário
-    const [codeFilter, titleFilter] = filterValue.split(' - ').map(part => part.trim());
+    const [codeFilter, titleFilter] = filterValue
+      .split(' - ')
+      .map((part) => part.trim());
 
-    const filter = this.service.studyGroups?.filter(option =>
-      this.filterByDayOfWeek(option) &&
-      this.filterByHour(option) &&
-      (option.code.toLowerCase().includes(codeFilter) ||
-       option.title.toLowerCase().includes(titleFilter))
-    ) || [];
+    const filter =
+      this.service.studyGroups?.filter(
+        (option) =>
+          this.filterByDayOfWeek(option) &&
+          this.filterByHour(option) &&
+          (option.code.toLowerCase().includes(codeFilter) ||
+            option.title.toLowerCase().includes(titleFilter))
+      ) || [];
 
     this.options = [...filter];
     this.cdr.detectChanges();
@@ -87,21 +93,26 @@ export class StudyGroupSearchBarComponent implements OnInit {
   clearFilters(): void {
     this.input.nativeElement.value = '';
     this.time.nativeElement.value = '';
-    this.checkboxes.forEach(checkbox => checkbox.checked = false);
+    this.selectedDays.clear();
+    this.selectedHour = '';
+
+    this.checkboxes.forEach((checkbox) => (checkbox.checked = false));
     this.cdr.detectChanges();
 
     this.service.getStudyGroups().subscribe((dados) => {
       this.service.studyGroups = dados;
       this.options = dados;
       this.filteredOptions = this.options.slice();
-    })
+    });
   }
 
   filterByDayOfWeek(option: any): boolean {
     if (!option.daysOfWeek || this.selectedDays.size === 0) {
       return true; // Sem filtro de dia da semana ou dados não definidos
     }
-    return option.daysOfWeek.some((day: string) => this.selectedDays.has(day.toLowerCase()));
+    return option.daysOfWeek.some((day: string) =>
+      this.selectedDays.has(day.toLowerCase())
+    );
   }
 
   filterByHour(option: any): boolean {
