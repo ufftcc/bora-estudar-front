@@ -1,6 +1,6 @@
 import { CommonModule, NgFor } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-study-create-group',
@@ -30,6 +30,7 @@ import { Subscription } from 'rxjs';
     MatIconButton,
     MatIcon,
     MatFormField,
+    MatFormFieldModule,
     MatLabel,
     MatSelect,
     FormsModule,
@@ -47,7 +48,6 @@ import { Subscription } from 'rxjs';
   styleUrl: './study-create-group.component.scss',
   providers: [MessageService],
 })
-
 export class StudyCreateGroupComponent implements OnInit {
   formulario!: UntypedFormGroup;
   options: any[] = [];
@@ -82,7 +82,7 @@ export class StudyCreateGroupComponent implements OnInit {
   ) {
     this.formulario = this.builder.group({
       title: [''],
-      description: [''],
+      description: ['', [Validators.maxLength(255)]],
       campoOculto: [''],
       subject: [''],
       maxStudents: [''],
@@ -120,6 +120,8 @@ export class StudyCreateGroupComponent implements OnInit {
 
   private subscription: Subscription | null = null;
 
+  disableComponent: boolean = false;
+
   createGroups() {
     const idUsuario = localStorage.getItem('idUsuario');
     const id = Number(idUsuario);
@@ -143,18 +145,34 @@ export class StudyCreateGroupComponent implements OnInit {
       .createStudyGroup(studyGroupData)
       .subscribe({
         next: (response) => {
-          console.error('Grupo de estudo criado com sucesso:', response);
+          console.log('Grupo de estudo criado com sucesso:', response);
 
           const mappedStudyGroup = this.service.mappingStudyGroup(response);
           this.service.setStudyGroup(mappedStudyGroup);
 
-          this.snackBar.open('Grupo de estudo criado com sucesso!', 'X', {
-            duration: 2500,
+          this.disableComponent = true;
+
+          if (this.disableComponent) {
+            this.formulario.get('campoOculto')?.disable();
+            this.formulario.get('description')?.disable();
+            this.formulario.get('meetingTime')?.disable();
+          }
+
+          this.snackBar.open('Criando grupo de estudo...', 'X', {
+            duration: 5000,
           });
-          this.router.navigate([`/detail/${response.id}`]);
+
+          this.router.navigate([`/detail/${response.id}`], {
+            state: {
+              fromCreate: true,
+            },
+          });
         },
         error: (error) => {
           console.error('Erro ao criar grupo de estudo:', error);
+          this.snackBar.open('Erro ao criar grupo de estudo.', 'X', {
+            duration: 2500,
+          });
         },
       });
   }

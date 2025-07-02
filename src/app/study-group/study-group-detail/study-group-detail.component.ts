@@ -17,6 +17,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { interval, Subscription } from 'rxjs';
+import { switchMap, takeWhile } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-study-group-detail',
@@ -67,8 +70,69 @@ export class StudyGroupDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.studyGroup = this.service.getStudyGroup();
-    this.callGroup();
+    this.studyGroup = this.service.getStudyGroup(); // ainda útil se estiver em memória
+    const nav = this.router.getCurrentNavigation();
+    const state =
+      (nav?.extras?.state as { fromCreate?: boolean }) || history.state;
+    if (state?.fromCreate) {
+      this.startPolling();
+    } else {
+      this.callGroup();
+    }
+  }
+
+  private pollingSub!: Subscription;
+
+  startPolling() {
+    const idParam = this.route.snapshot.paramMap.get('groupId');
+    const groupId = idParam ? Number(idParam) : null;
+
+    if (groupId === null) {
+      this.router.navigate(['/search']);
+      return;
+    }
+
+    this.loading = true;
+
+    this.pollingSub = interval(2000)
+      .pipe(
+        switchMap(() => this.service.getStudyGroupId(groupId)),
+        takeWhile((response: any) => {
+          const subject = response?.discordInviteUrl;
+          const shouldKeepPolling =
+            !subject || Object.keys(subject).length === 0;
+          if (!shouldKeepPolling) {
+            const mapped = this.service.mappingStudyGroup(response);
+            this.studyGroup = mapped;
+            this.discordInviteUrl = mapped.discordInviteUrl;
+            this.evaluateUserState();
+            this.loading = false;
+
+            this.snackBar.open('Grupo de estudo criado com sucesso!', 'X', {
+              duration: 3000,
+            });
+          }
+          return shouldKeepPolling;
+        })
+      )
+      .subscribe({
+        error: (error) => {
+          console.error('Erro ao buscar grupo:', error);
+          this.router.navigate(['/search']);
+        },
+      });
+  }
+
+  evaluateUserState() {
+    const idUsuario = localStorage.getItem('idUsuario');
+    const id = Number(idUsuario);
+
+    if (this.studyGroup && Array.isArray(this.studyGroup.students)) {
+      this.userInGroup = this.studyGroup.students.some(
+        (student: any) => student.id === id
+      );
+      this.isOwnerId = this.studyGroup.ownerId === id;
+    }
   }
 
   openDiscord() {
@@ -172,5 +236,8 @@ export class StudyGroupDetailComponent implements OnInit {
         },
       });
     }
+  }
+  ngOnDestroy() {
+    this.pollingSub?.unsubscribe();
   }
 }

@@ -4,7 +4,7 @@
       <mat-form-field appearance="outline" class="search_row_search_bar">
         <mat-label>Disciplina</mat-label>
         <input #input matInput formControlName="campoOculto" class="search_row_search_bar" [matAutocomplete]="auto" (input)="filter()" (focus)="filter()" />
-        <mat-autocomplete requireSelection #auto="matAutocomplete" (optionSelected)="onOptionSelected($event.option.value)">
+        <mat-autocomplete [attr.disabled] = "disableComponent" requireSelection #auto="matAutocomplete" (optionSelected)="onOptionSelected($event.option.value)">
           <mat-option *ngFor="let option of filteredOptions" [value]="option">
           <!-- <mat-option *ngFor="let option of filteredOptions" [value]="option.code + ' - ' + option.name"> -->
             ({{ option.code }}) {{ option.name }}
@@ -15,13 +15,14 @@
 
     <mat-form-field class="input100">
       <mat-label>Descrição</mat-label>
-      <textarea matInput formControlName="description"></textarea>
+      <textarea matInput formControlName="description" maxlength="255"></textarea>
+      <mat-hint align="end">{{ formulario.get('description')?.value?.length || 0 }} / 255</mat-hint>
     </mat-form-field>
 
     <div class="row">
       <mat-form-field>
         <mat-label>Número de Alunos</mat-label>
-        <mat-select formControlName="maxStudents">
+        <mat-select [disabled] = "disableComponent" formControlName="maxStudents">
           <mat-option [value]="2">2</mat-option>
           <mat-option [value]="3">3</mat-option>
           <mat-option [value]="4">4</mat-option>
@@ -38,7 +39,7 @@
 
     <h2>Dias da Semana</h2>
     <mat-chip-listbox formControlName="weekdays" multiple>
-      <mat-chip-option *ngFor="let day of daysOfWeek" [value]="day">
+      <mat-chip-option [disabled] = "disableComponent" *ngFor="let day of daysOfWeek" [value]="day">
         {{ day.name }}
       </mat-chip-option>
     </mat-chip-listbox>
@@ -46,7 +47,7 @@
     <div class="allCenter">
       <p-toast />
 
-      <button mat-raised-button color="primary" class="input100" (click)="createGroups()">Criar Grupo</button>
+      <button mat-raised-button color="primary" [attr.disabled] = "disableComponent" class="input100" (click)="createGroups()">Criar Grupo</button>
     </div>
   </form>
 </div>
