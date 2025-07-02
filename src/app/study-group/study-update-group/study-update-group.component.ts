@@ -1,6 +1,6 @@
 import { CommonModule, NgFor } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
@@ -16,6 +16,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-study-update-group',
@@ -27,6 +28,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatIconButton,
     MatIcon,
     MatFormField,
+    MatFormFieldModule,
     MatLabel,
     MatSelect,
     FormsModule,
@@ -38,11 +40,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatButton,
     MatAutocompleteModule,
     ToastModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
   ],
   templateUrl: './study-update-group.component.html',
   styleUrl: './study-update-group.component.scss',
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class StudyUpdateGroupComponent implements OnInit {
   formulario!: UntypedFormGroup;
@@ -76,18 +78,19 @@ export class StudyUpdateGroupComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     public service: StudyGroupService,
-    private builder: UntypedFormBuilder) {
+    private builder: UntypedFormBuilder
+  ) {
     this.formulario = this.builder.group({
       id: [''],
       title: [''],
-      description: [''],
+      description: ['', [Validators.maxLength(255)]],
       campoOculto: [''],
       subject: [''],
       maxStudents: [''],
       meetingTime: [''],
-      modality: ["REMOTE"],
-      weekdays: [[]]
-    })
+      modality: ['REMOTE'],
+      weekdays: [[]],
+    });
   }
 
   ngOnInit(): void {
@@ -95,39 +98,54 @@ export class StudyUpdateGroupComponent implements OnInit {
       this.service.subjects = dados;
       this.options = dados;
       this.filteredOptions = this.options.slice();
-    })
+    });
 
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       const groupId = params['id'];
 
       this.service.getStudyGroupId(groupId).subscribe((dados: any) => {
-        this.formulario.patchValue(dados)
-        this.formulario.get('campoOculto')?.patchValue(dados.subject.code + ' - ' + dados.subject.name);
+        this.formulario.patchValue(dados);
+        this.formulario
+          .get('campoOculto')
+          ?.patchValue(dados.subject.code + ' - ' + dados.subject.name);
 
-        const selectedDays = dados.weekdays.map((day: { id: number; name: string }) => {
-          return this.daysOfWeek.find(d => d.id === day.id);
-        });
+        // Desabilita o campo visual e funcionalmente
+        this.formulario.get('campoOculto')?.disable();
+
+        const selectedDays = dados.weekdays.map(
+          (day: { id: number; name: string }) => {
+            return this.daysOfWeek.find((d) => d.id === day.id);
+          }
+        );
         this.formulario.get('weekdays')?.patchValue(selectedDays);
-      })
+      });
     });
   }
 
   filter(): void {
     const filterValue = this.input.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.service.subjects.filter(option =>
-      option.id.toString().includes(filterValue) || option.name.toLowerCase().includes(filterValue) || option.code.toLowerCase().includes(filterValue)
+    this.filteredOptions = this.service.subjects.filter(
+      (option) =>
+        option.id.toString().includes(filterValue) ||
+        option.name.toLowerCase().includes(filterValue) ||
+        option.code.toLowerCase().includes(filterValue)
     );
   }
 
   onOptionSelected(option: any): void {
     this.formulario.get('subject')?.patchValue(option);
-    this.formulario.get('campoOculto')?.patchValue(option.code + ' - ' + option.name);
+    this.formulario
+      .get('campoOculto')
+      ?.patchValue(option.code + ' - ' + option.name);
   }
 
-  editGroups(){
+  editGroups() {
     const idUsuario = localStorage.getItem('idUsuario');
     const id = Number(idUsuario);
-    const title = this.formulario?.value.subject.code + " " + this.formulario?.value.subject.name;
+    const title =
+      this.formulario?.value.subject.code +
+      ' ' +
+      this.formulario?.value.subject.name;
 
     const groupId = this.formulario?.value.id;
 
@@ -141,28 +159,28 @@ export class StudyUpdateGroupComponent implements OnInit {
       weekdays: this.formulario?.value.weekdays,
       meetingTime: this.formulario?.value.meetingTime,
       maxStudents: this.formulario?.value.maxStudents,
-      modality: this.formulario?.value.modality
+      modality: this.formulario?.value.modality,
     };
 
     this.loading = true;
 
     this.service.editStudyGroup(studyGroupData, groupId).subscribe(
-      response => {
+      (response) => {
         console.log('Grupo de estudo editado com sucesso:', response);
 
-        this.snackBar.open(
-          'Grupo de estudo editado com sucesso!',
-          'X',
-          { duration: 2500 }
-        );
+        this.snackBar.open('Grupo de estudo editado com sucesso!', 'X', {
+          duration: 2500,
+        });
         this.service.setStudyGroup(response);
         this.router.navigate([`/detail/${response.id}`]);
       },
-      error => {
+      (error) => {
         this.loading = false;
         console.error('Erro ao criar grupo de estudo:', error);
+        this.snackBar.open('Erro ao editar grupo de estudo.', 'X', {
+          duration: 2500,
+        });
       }
     );
   }
-
 }

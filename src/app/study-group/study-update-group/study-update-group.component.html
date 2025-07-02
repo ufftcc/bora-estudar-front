@@ -15,7 +15,8 @@
 
     <mat-form-field class="input100">
       <mat-label>Descrição</mat-label>
-      <textarea matInput formControlName="description"></textarea>
+      <textarea matInput formControlName="description" maxlength="255"></textarea>
+      <mat-hint align="end">{{ formulario.get('description')?.value?.length || 0 }} / 255</mat-hint>
     </mat-form-field>
 
     <div class="row">
