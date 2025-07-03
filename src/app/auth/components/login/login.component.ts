@@ -7,25 +7,28 @@ import { MatButton, MatAnchor } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    standalone: true,
-    imports: [
-        MatCard,
-        MatCardTitle,
-        MatCardContent,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatButton,
-        MatAnchor,
-        RouterLink,
-    ],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [
+    MatCard,
+    MatCardTitle,
+    MatCardContent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatSnackBarModule,
+    MatLabel,
+    MatInput,
+    MatButton,
+    MatAnchor,
+    RouterLink,
+  ],
 })
 export class LoginComponent implements OnInit {
   private router = inject(Router);
@@ -35,6 +38,8 @@ export class LoginComponent implements OnInit {
   protected errorMessage = '';
   // isLoggedIn$ = this.authService.isLoggedIn();
   constructor() {}
+
+  private snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
     // this.authService.isLoggedIn().subscribe((isLogged) => {
@@ -61,22 +66,23 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(body).subscribe({
       next: (data: any) => {
-        console.error('login', data)
+        console.error('login', data);
         const idUsuario = data.id.toString();
         localStorage.setItem('idUsuario', idUsuario);
         let isDiscordAssociate = data.isDiscordAssociate;
-        console.error('isDiscordAssociate', isDiscordAssociate)
+        console.error('isDiscordAssociate', isDiscordAssociate);
         // this.router.navigateByUrl('/search');
 
-        if(isDiscordAssociate === true){
+        if (isDiscordAssociate === true) {
           this.router.navigateByUrl('/search');
         } else {
           this.router.navigateByUrl('/associate');
         }
       },
       error: (error) => {
-        console.log(error);
-        this.errorMessage = error.error.message;
+        this.snackBar.open('Email ou Senha inválidos!', 'X', {
+          duration: 4000
+        });
       },
     });
   }
