@@ -15,6 +15,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Router } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/core/security/auth/auth.service';
+
 
 @Component({
   selector: 'app-study-group-search-bar',
@@ -49,10 +52,32 @@ export class StudyGroupSearchBarComponent implements OnInit {
   constructor(
     private cdr: ChangeDetectorRef,
     public service: StudyGroupService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+
+    this.route.queryParams.subscribe((params) => {
+
+      const updated = params['updated'];
+      const userIdString = localStorage.getItem('idUsuario');
+      const userId = userIdString ? Number(userIdString) : null;
+      if (updated && userId) {
+        this.authService.refreshUserInfo(userId).subscribe((user) => {
+          localStorage.setItem('signed-user', JSON.stringify(user));
+
+          // limpa a query param da URL
+          this.router.navigate([], {
+            queryParams: {},
+            queryParamsHandling: '',
+            replaceUrl: true,
+          });
+        });
+      }
+    });
+
     this.service.getStudyGroups().subscribe((dados) => {
       this.service.studyGroups = dados;
       this.options = dados;

@@ -66,18 +66,9 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(body).subscribe({
       next: (data: any) => {
-        console.error('login', data);
         const idUsuario = data.id.toString();
         localStorage.setItem('idUsuario', idUsuario);
-        let isDiscordAssociate = data.isDiscordAssociate;
-        console.error('isDiscordAssociate', isDiscordAssociate);
-        // this.router.navigateByUrl('/search');
-
-        if (isDiscordAssociate === true) {
-          this.router.navigateByUrl('/search');
-        } else {
-          this.router.navigateByUrl('/associate');
-        }
+        this.router.navigateByUrl('/search');
       },
       error: (error) => {
         this.snackBar.open('Email ou Senha inválidos!', 'X', {

@@ -74,4 +74,9 @@ export class AuthService {
   isLoggedIn(): Observable<boolean> {
     return this.storageService.isLoggedIn();
   }
+
+  refreshUserInfo(id: number): Observable<any> {
+    return this.http.get(`${AUTH_API}/users/${id}`);
+  }
 }
+

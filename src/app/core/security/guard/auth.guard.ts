@@ -57,9 +57,30 @@ export const authGuard: CanActivateFn = (
     isLoggedIn = b;
   });
 
+  console.log(isLoggedIn);
+
   if (!isLoggedIn) {
     router.navigateByUrl('/login');
     return false;
+  }
+
+  const url = _state.url;
+
+  if (url.includes('/associate')) {
+    const signed = localStorage.getItem('signed-user');
+
+    console.log(`signed:${signed}`);
+    if (signed) {
+
+        const signedUser = JSON.parse(signed);
+
+        if (signedUser?.isDiscordAssociate) {
+          router.navigateByUrl('/search');
+          return false;
+        }
+
+        return true;
+    }
   }
 
   return true;
@@ -73,25 +94,38 @@ export const authGuard: CanActivateFn = (
  * @param _state - The router state snapshot.
  * @returns A boolean or UrlTree indicating whether to allow or deny access to the route.
  */
+
 export const discordAssociateGuard: CanActivateFn = (
   _route: ActivatedRouteSnapshot,
   _state: RouterStateSnapshot
-): boolean | UrlTree => {
-  console.log('The discordAssociateGuard is being called correctly');
-  const authService = inject(AuthService);
+) => {
   const router = inject(Router);
-
   const signed = localStorage.getItem('signed-user');
 
-  if (signed) {
-    const signedUser = JSON.parse(signed);
-    const isDiscordAssociate = signedUser.isDiscordAssociate;
-    if(!isDiscordAssociate){
-      router.navigateByUrl('/associate');
-    }
-  } else {
-    console.error('Usuário não encontrado no localStorage');
+  if (!signed) {
+    console.warn('Usuário não encontrado no localStorage');
+    return router.createUrlTree(['/login']);
   }
-  // router.navigateByUrl('/search');
-  return true;
+
+  console.log(`signed:${signed}`);
+  try {
+
+    const url = _state.url;
+
+    if (url.includes('updated=true')) {
+      return true; // exceção temporária para permitir atualização
+    }
+
+    const signedUser = JSON.parse(signed);
+    if (!signedUser?.isDiscordAssociate) {
+      //console.log(`signedUser:${signedUser}`);
+      return router.createUrlTree(['/associate']);
+    }
+    return true;
+
+  } catch (e) {
+    console.error('Erro ao fazer parse do signed-user:', e);
+    return router.createUrlTree(['/associate']);
+  }
+
 };

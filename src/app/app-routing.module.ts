@@ -14,32 +14,63 @@ import { StudyGroupAssociateComponent } from './study-group/study-group-associat
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
     path: 'password-recovery',
     component: PasswordRecoveryComponent,
     canActivate: [loggedInGuard],
   },
-  { path: 'login', component: LoginComponent, canActivate: [loggedInGuard] },
-  // prettier-ignore
-  { path: 'register', component: RegisterComponent, canActivate: [loggedInGuard]},
-  // prettier-ignore
-  { path: 'confirm', component: EmailConfirmComponent, canActivate: [loggedInGuard] },
   {
-    path: '',
+    path: 'login',
     component: LoginComponent,
     canActivate: [loggedInGuard],
   },
   {
-    path: '',
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [loggedInGuard],
+  },
+  {
+    path: 'confirm',
+    component: EmailConfirmComponent,
+    canActivate: [loggedInGuard],
+  },
+  {
+    path: 'associate',
+    component: StudyGroupAssociateComponent,
     canActivate: [authGuard],
-    children: [
-      { path: 'search', component: StudyGroupSearchBarComponent },
-      { path: 'create', component: StudyCreateGroupComponent },
-      { path: 'detail/:groupId', component: StudyGroupDetailComponent },
-      { path: 'my-study-group', component: MyStudyGroupComponent },
-      { path: 'edit', component: StudyUpdateGroupComponent },
-      { path: 'associate', component: StudyGroupAssociateComponent },
-      { path: '', redirectTo: 'search', pathMatch: 'full' },
-    ],
+  },
+  {
+    path: 'search',
+    component: StudyGroupSearchBarComponent,
+    canActivate: [authGuard, discordAssociateGuard],
+  },
+  {
+    path: 'create',
+    component: StudyCreateGroupComponent,
+    canActivate: [authGuard, discordAssociateGuard],
+  },
+  {
+    path: 'detail/:groupId',
+    component: StudyGroupDetailComponent,
+    canActivate: [authGuard, discordAssociateGuard],
+  },
+  {
+    path: 'my-study-group',
+    component: MyStudyGroupComponent,
+    canActivate: [authGuard, discordAssociateGuard],
+  },
+  {
+    path: 'edit',
+    component: StudyUpdateGroupComponent,
+    canActivate: [authGuard, discordAssociateGuard],
+  },
+  {
+    path: '**',
+    redirectTo: 'login',
   },
 ];
 

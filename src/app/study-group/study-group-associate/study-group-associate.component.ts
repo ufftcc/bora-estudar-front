@@ -20,6 +20,8 @@ export class StudyGroupAssociateComponent implements OnInit {
 
   ngOnInit(): void {
 
+
+
   }
 
   associate() {
