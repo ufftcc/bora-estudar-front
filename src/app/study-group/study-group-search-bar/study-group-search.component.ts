@@ -59,30 +59,12 @@ export class StudyGroupSearchBarComponent implements OnInit {
 
   ngOnInit() {
 
-    this.route.queryParams.subscribe((params) => {
-
-      const updated = params['updated'];
-      const userIdString = localStorage.getItem('idUsuario');
-      const userId = userIdString ? Number(userIdString) : null;
-      if (updated && userId) {
-        this.authService.refreshUserInfo(userId).subscribe((user) => {
-          localStorage.setItem('signed-user', JSON.stringify(user));
-
-          // limpa a query param da URL
-          this.router.navigate([], {
-            queryParams: {},
-            queryParamsHandling: '',
-            replaceUrl: true,
-          });
-        });
-      }
-    });
-
     this.service.getStudyGroups().subscribe((dados) => {
       this.service.studyGroups = dados;
       this.options = dados;
       this.filteredOptions = this.options.slice();
     });
+
   }
 
   filter(): void {
