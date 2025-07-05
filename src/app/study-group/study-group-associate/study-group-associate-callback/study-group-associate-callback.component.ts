@@ -43,7 +43,7 @@ export class StudyGroupAssociateCallbackComponent implements OnInit {
           },
           next(value) {
 
-            console.log(value);
+            //console.log(value);
             localStorage.setItem('signed-user', JSON.stringify(value));
             // sucesso. envia para a home
             localRouter.navigateByUrl('/search');

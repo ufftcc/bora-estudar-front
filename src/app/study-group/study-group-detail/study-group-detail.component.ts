@@ -211,12 +211,12 @@ export class StudyGroupDetailComponent implements OnInit {
     if (idDetail !== null) {
       this.service.getStudyGroupId(idDetail).subscribe({
         next: (response) => {
-          console.error('grupo de estudo - response:', response);
+          //console.error('grupo de estudo - response:', response);
           const mappedStudyGroup = this.service.mappingStudyGroup(response);
           this.studyGroup = mappedStudyGroup;
           this.discordInviteUrl = this.studyGroup.discordInviteUrl; // Assumindo que o invite está nesta propriedade
 
-          console.error('grupo de estudo - detalhe:', mappedStudyGroup);
+          //console.error('grupo de estudo - detalhe:', mappedStudyGroup);
 
           const idUsuario = localStorage.getItem('idUsuario');
           const id = Number(idUsuario);

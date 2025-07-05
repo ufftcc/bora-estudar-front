@@ -57,7 +57,7 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     if (!this.signupForm.valid) return;
 
-    console.log('signup', this.signupForm.value);
+    //console.log('signup', this.signupForm.value);
 
     const body: SignupBody = {
       name: this.signupForm?.value.name,

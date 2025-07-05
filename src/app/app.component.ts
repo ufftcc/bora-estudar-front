@@ -84,7 +84,7 @@ export class AppComponent implements OnInit {
   public logout() {
     this.authService.logout().subscribe({
       next: (data) => {
-        console.log(data);
+        //console.log(data);
         this.router.navigateByUrl('/login');
         this.close();
 
@@ -103,7 +103,7 @@ export class AppComponent implements OnInit {
   public getUser() {
     this.authService.getUser().subscribe({
       next: (data) => {
-        console.log(data);
+        //console.log(data);
         this.user = data;
         this.cdr.detectChanges();
       },

@@ -166,7 +166,7 @@ export class StudyUpdateGroupComponent implements OnInit {
 
     this.service.editStudyGroup(studyGroupData, groupId).subscribe(
       (response) => {
-        console.log('Grupo de estudo editado com sucesso:', response);
+        //console.log('Grupo de estudo editado com sucesso:', response);
 
         this.snackBar.open('Grupo de estudo editado com sucesso!', 'X', {
           duration: 2500,

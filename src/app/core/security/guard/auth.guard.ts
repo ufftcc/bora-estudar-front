@@ -57,7 +57,7 @@ export const authGuard: CanActivateFn = (
     isLoggedIn = b;
   });
 
-  console.log(isLoggedIn);
+  //console.log(isLoggedIn);
 
   if (!isLoggedIn) {
     router.navigateByUrl('/login');
@@ -69,17 +69,17 @@ export const authGuard: CanActivateFn = (
   if (url.startsWith('/associate')) {
     const signed = localStorage.getItem('signed-user');
 
-    console.log(`signed:${signed}`);
+    //console.log(`signed:${signed}`);
     if (signed) {
 
         const signedUser = JSON.parse(signed);
 
-        if (signedUser?.isDiscordAssociate) {
-          router.navigateByUrl('/search');
-          return false;
-        }
+      if (signedUser?.isDiscordAssociate) {
+        router.navigateByUrl('/search');
+        return false;
+      }
 
-        return true;
+      return true;
     }
   }
 
@@ -99,6 +99,7 @@ export const discordAssociateGuard: CanActivateFn = (
   _route: ActivatedRouteSnapshot,
   _state: RouterStateSnapshot
 ) => {
+  console.log('The discordAssociateGuard is being called correctly');
   const router = inject(Router);
   const signed = localStorage.getItem('signed-user');
 
@@ -107,9 +108,8 @@ export const discordAssociateGuard: CanActivateFn = (
     return router.createUrlTree(['/login']);
   }
 
-  console.log(`signed:${signed}`);
+  //console.log(`signed:${signed}`);
   try {
-
     const url = _state.url;
 
     if (url.includes('updated=true')) {
@@ -122,10 +122,8 @@ export const discordAssociateGuard: CanActivateFn = (
       return router.createUrlTree(['/associate']);
     }
     return true;
-
   } catch (e) {
     console.error('Erro ao fazer parse do signed-user:', e);
     return router.createUrlTree(['/associate']);
   }
-
 };

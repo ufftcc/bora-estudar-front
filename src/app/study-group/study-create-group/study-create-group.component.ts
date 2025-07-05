@@ -145,7 +145,7 @@ export class StudyCreateGroupComponent implements OnInit {
       .createStudyGroup(studyGroupData)
       .subscribe({
         next: (response) => {
-          console.log('Grupo de estudo criado com sucesso:', response);
+          //console.log('Grupo de estudo criado com sucesso:', response);
 
           const mappedStudyGroup = this.service.mappingStudyGroup(response);
           this.service.setStudyGroup(mappedStudyGroup);

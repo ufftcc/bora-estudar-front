@@ -20,7 +20,7 @@ export class EmailConfirmComponent implements OnInit {
 
       this.authService.confirmEmail(token).subscribe({
         next: (data) => {
-          console.log(data);
+          //console.log(data);
           this.message = data;
         },
         error: (err) => {
