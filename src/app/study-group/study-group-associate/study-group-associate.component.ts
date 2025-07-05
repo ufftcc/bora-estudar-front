@@ -27,7 +27,7 @@ export class StudyGroupAssociateComponent implements OnInit {
   associate() {
     const idUsuario = localStorage.getItem('idUsuario');
     const redirectUri = encodeURIComponent(
-      `${this.encodedApiUrl}/discord/users`
+      `${this.encodedApiUrl}/associate/callback`
     );
     const url = `https://discord.com/oauth2/authorize?client_id=1237632955145257021&response_type=code&redirect_uri=${redirectUri}&scope=identify&state=${idUsuario}`;
     window.open(url, '_blank');
