@@ -66,7 +66,7 @@ export const authGuard: CanActivateFn = (
 
   const url = _state.url;
 
-  if (url.includes('/associate')) {
+  if (url.startsWith('/associate')) {
     const signed = localStorage.getItem('signed-user');
 
     console.log(`signed:${signed}`);

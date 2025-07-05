@@ -11,6 +11,7 @@ import { StudyCreateGroupComponent } from './study-group/study-create-group/stud
 import { MyStudyGroupComponent } from './study-group/my-study-group/my-study-group.component';
 import { StudyUpdateGroupComponent } from './study-group/study-update-group/study-update-group.component';
 import { StudyGroupAssociateComponent } from './study-group/study-group-associate/study-group-associate.component';
+import { StudyGroupAssociateCallbackComponent } from './study-group/study-group-associate/study-group-associate-callback/study-group-associate-callback.component';
 
 const routes: Routes = [
   {
@@ -40,8 +41,18 @@ const routes: Routes = [
   },
   {
     path: 'associate',
-    component: StudyGroupAssociateComponent,
-    canActivate: [authGuard],
+    children: [
+      {
+        path: 'callback',
+        component: StudyGroupAssociateCallbackComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: '',
+        component: StudyGroupAssociateComponent,
+        canActivate: [authGuard],
+      },
+    ],
   },
   {
     path: 'search',
