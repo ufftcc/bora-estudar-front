@@ -47,11 +47,10 @@ export class AuthService {
       );
   }
 
-  confirmEmail(token: string): Observable<any> {
-    return this.http.get(
-      AUTH_API.concat(`/confirm?token=${token}`),
-      httpOptions
-    );
+  confirmEmail(token: string): Observable<string> {
+    return this.http.get(AUTH_API.concat(`/confirm?token=${token}`), {
+      responseType: 'text',
+    });
   }
 
   logout(): Observable<any> {
