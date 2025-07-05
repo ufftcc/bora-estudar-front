@@ -1,6 +1,7 @@
 export const environment = {
-    development: true,
-    encodedApiUrl: 'http%3A%2F%2Flocalhost%3A8080',
-    // authApi: '/api'
-    authApi: ''
+  development: true,
+  encodedApiUrl: 'http://localhost:8080',
+  //encodedApiUrl: 'https://boraestudar.ngrok.dev',
+  // authApi: '/api'
+  authApi: '',
 };
