@@ -28,7 +28,7 @@ export class AuthService {
           this.storageService.saveUser(user);
         }),
         catchError((error) => {
-          console.log(`Error on login: ${error.message}`);
+          console.error(`Error on login: ${error.message}`);
           this.storageService.clear();
           throw error;
         })
@@ -40,7 +40,7 @@ export class AuthService {
       .post<UserResponseBasicDto>(AUTH_API.concat('/signup'), body, httpOptions)
       .pipe(
         catchError((error) => {
-          console.log(`Error on login: ${error.message}`);
+          console.error(`Error on login: ${error.message}`);
           this.storageService.clear();
           throw error;
         })
@@ -60,7 +60,7 @@ export class AuthService {
         this.storageService.clear();
       }),
       catchError((error) => {
-        console.log(`Error on login: ${error.message}`);
+        console.error(`Error on login: ${error.message}`);
         this.storageService.clear();
         throw error;
       })
