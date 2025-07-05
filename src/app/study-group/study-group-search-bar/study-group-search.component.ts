@@ -1,4 +1,13 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+  inject,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StudyGroupFilterDialogComponent } from '../study-group-filter-dialog/study-group-filter-dialog.component';
 import { StudyGroupSearchListComponent } from '../study-group-search-list/study-group-search-list.component';
@@ -17,7 +26,6 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/core/security/auth/auth.service';
-
 
 @Component({
   selector: 'app-study-group-search-bar',
@@ -58,13 +66,11 @@ export class StudyGroupSearchBarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
     this.service.getStudyGroups().subscribe((dados) => {
       this.service.studyGroups = dados;
       this.options = dados;
       this.filteredOptions = this.options.slice();
     });
-
   }
 
   filter(): void {
@@ -106,11 +112,7 @@ export class StudyGroupSearchBarComponent implements OnInit {
     this.checkboxes.forEach((checkbox) => (checkbox.checked = false));
     this.cdr.detectChanges();
 
-    this.service.getStudyGroups().subscribe((dados) => {
-      this.service.studyGroups = dados;
-      this.options = dados;
-      this.filteredOptions = this.options.slice();
-    });
+    this.ngOnInit();
   }
 
   filterByDayOfWeek(option: any): boolean {
