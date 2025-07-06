@@ -8,6 +8,18 @@
   align-items: center;
 }
 
+.logo {
+  max-width: 100%;
+  padding: 18px;
+
+  img {
+    width: 100%;
+    -webkit-box-shadow: 0px 0px 5px 1px rgba(0, 55, 145, 0.56);
+    -moz-box-shadow: 0px 0px 5px 1px rgba(0, 55, 145, 0.56);
+    box-shadow: 0px 0px 5px 1px rgba(0, 55, 145, 0.56);
+  }
+}
+
 mat-card {
   display: flex;
   flex-direction: column;
@@ -29,4 +41,29 @@ mat-form-field {
 .form-button {
   width: 100%;
   margin-bottom: 20px;
+}
+
+// Remove o ícone nativo do navegador para mostrar/ocultar senha
+.mat-mdc-form-field input[type="password"]::-ms-reveal,
+.mat-mdc-form-field input[type="password"]::-ms-clear,
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none !important;
+}
+
+.mat-mdc-form-field input[type="password"]::-webkit-credentials-auto-fill-button,
+.mat-mdc-form-field input[type="password"]::-webkit-strong-password-auto-fill-button,
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-strong-password-auto-fill-button {
+  display: none !important;
+}
+
+// Remove ícones de senha do Chrome/Edge
+.mat-mdc-form-field input[type="password"]::-webkit-textfield-decoration-container {
+  display: none !important;
+}
+
+// Para Edge específico
+.mat-mdc-form-field input[type="password"]::-ms-reveal {
+  display: none !important;
 }

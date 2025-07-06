@@ -4,29 +4,33 @@ import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } 
 import { SignupBody } from '../../models/signup-body';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
-import { MatButton, MatAnchor } from '@angular/material/button';
+import { MatButton, MatAnchor, MatIconButton } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-    selector: 'app-register',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss'],
-    standalone: true,
-    imports: [
-        MatCard,
-        MatCardTitle,
-        MatCardContent,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatButton,
-        MatAnchor,
-        RouterLink,
-    ],
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
+  standalone: true,
+  imports: [
+    MatCard,
+    MatCardTitle,
+    MatCardContent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatButton,
+    MatAnchor,
+    MatIconButton,
+    MatIcon,
+    MatSuffix,
+    RouterLink,
+  ],
 })
 export class RegisterComponent implements OnInit {
   private router = inject(Router);
@@ -35,6 +39,7 @@ export class RegisterComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
   protected signupForm!: FormGroup;
   protected errorMessage = '';
+  protected hidePassword = true;
   isLoggedIn = false;
   constructor() {}
 
@@ -54,6 +59,10 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
+  }
+
   onSubmit(): void {
     if (!this.signupForm.valid) return;
 
@@ -62,7 +71,7 @@ export class RegisterComponent implements OnInit {
     const body: SignupBody = {
       name: this.signupForm?.value.name,
       email: this.signupForm?.value.email,
-      password: this.signupForm?.value.password
+      password: this.signupForm?.value.password,
     };
 
     this.authService.register(body).subscribe({
