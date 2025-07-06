@@ -28,9 +28,9 @@
 
   <div class="search_row_2">
     <button mat-button [matMenuTriggerFor]="menu" class="pesquisarButton">Dias da Semana</button>
-    <mat-menu #menu="matMenu" style="max-width: auto !important;">
+    <mat-menu #menu="matMenu">
       <div class="position">
-        <section style="display: flex;">
+        <section class="checkbox-wrapper">
           <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('dom')">DOM</mat-checkbox>
           <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('seg')">SEG</mat-checkbox>
           <mat-checkbox color="primary" (click)="$event.stopPropagation(); days('ter')">TER</mat-checkbox>
