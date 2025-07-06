@@ -4,6 +4,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StudyGroup } from './study-group';
 import { environment } from 'src/environments/environment';
 
+export interface StudyGroupFilterDto {
+  title?: string;
+  description?: string;
+  subjectName?: string;
+  meetingTime?: string;
+  weekdays?: number[];
+  modality?: string;
+  studentId?: number;
+}
+
 const AUTH_API = '/api';
 
 const httpOptions = {
@@ -37,14 +47,27 @@ export class StudyGroupService {
   getStudyGroupsFind(studentId: number): Observable<any[]> {
     const requestBody = { studentId };
 
-    return this.http.post<any[]>(`${AUTH_API}/study-groups/filter`, requestBody, httpOptions)
-    .pipe(
-      map((studyGroups) => studyGroups.map(this.mappingStudyGroup)),
-      catchError((error) => {
-        console.error('Erro na chamada de API', error);
-        return of([]);
-      })
-    );;
+    return this.http
+      .post<any[]>(`${AUTH_API}/study-groups/filter`, requestBody, httpOptions)
+      .pipe(
+        map((studyGroups) => studyGroups.map(this.mappingStudyGroup)),
+        catchError((error) => {
+          console.error('Erro na chamada de API', error);
+          return of([]);
+        })
+      );
+  }
+
+  filterStudyGroups(dto: StudyGroupFilterDto): Observable<any[]> {
+    return this.http
+      .post<any[]>(`${AUTH_API}/study-groups/filter`, dto, httpOptions)
+      .pipe(
+        map((studyGroups) => studyGroups.map(this.mappingStudyGroup)),
+        catchError((error) => {
+          console.error('Erro na chamada de API', error);
+          return of([]);
+        })
+      );
   }
 
   public mappingStudyGroup(item: any): any {
@@ -59,7 +82,7 @@ export class StudyGroupService {
       modality,
       weekdays,
       ownerId,
-      discordInviteUrl
+      discordInviteUrl,
     } = item;
 
     // const shortDescription =
@@ -101,16 +124,24 @@ export class StudyGroupService {
       daysOfWeek: weekdays.map((day: { name: string }) =>
         day.name.toLowerCase().substring(0, 3)
       ),
-      discordInviteUrl: discordInviteUrl
+      discordInviteUrl: discordInviteUrl,
     };
   }
 
-  joinGroupService(groupId: number,id: number){
-    return this.http.post<any[]>(`${AUTH_API}/study-groups/${groupId}/students/${id}/join`, {}, httpOptions)
+  joinGroupService(groupId: number, id: number) {
+    return this.http.post<any[]>(
+      `${AUTH_API}/study-groups/${groupId}/students/${id}/join`,
+      {},
+      httpOptions
+    );
   }
 
-  leaveGroupService(groupId: number,id: number){
-    return this.http.post<any[]>(`${AUTH_API}/study-groups/${groupId}/students/${id}/leave`, {}, httpOptions)
+  leaveGroupService(groupId: number, id: number) {
+    return this.http.post<any[]>(
+      `${AUTH_API}/study-groups/${groupId}/students/${id}/leave`,
+      {},
+      httpOptions
+    );
   }
 
   getSubjects(): Observable<any[]> {
@@ -126,7 +157,10 @@ export class StudyGroupService {
   }
 
   editStudyGroup(studyGroupData: any, groupId: number): Observable<any> {
-    return this.http.put<any>(`${AUTH_API}/study-groups/${groupId}`, studyGroupData);
+    return this.http.put<any>(
+      `${AUTH_API}/study-groups/${groupId}`,
+      studyGroupData
+    );
   }
 
   setStudyGroup(data: any) {

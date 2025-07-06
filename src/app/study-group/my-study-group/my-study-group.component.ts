@@ -8,7 +8,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { StudyGroupService } from '../study-group.service';
+import { StudyGroupService, StudyGroupFilterDto } from '../study-group.service';
 import { NgFor } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButton } from '@angular/material/button';
@@ -54,46 +54,107 @@ export class MyStudyGroupComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    const idUsuario = localStorage.getItem('idUsuario');
-    const id = Number(idUsuario);
+  ngOnInit(): void {
+    this.loadFilteredGroups(); // carrega todos sem filtro
+  }
 
-    this.service.getStudyGroupsFind(id).subscribe((dados) => {
-      //console.log('Dados carregados:', dados);
+  loadFilteredGroups(): void {
+    const dto: StudyGroupFilterDto = {
+      studentId: Number(localStorage.getItem('idUsuario')),
+    };
+    console.log('filterDto', dto);
+    this.service.filterStudyGroups(dto).subscribe((dados) => {
       this.service.myStudyGroups = dados;
       this.options = dados;
-      this.filteredOptions = this.options.slice();
+      this.filteredOptions = this.getDistinctOptions(dados);
+      this.cdr.detectChanges();
     });
+  }
+
+  getDistinctOptions(data: any[]): any[] {
+    const map = new Map();
+    for (let item of data) {
+      const key = item.code + item.title;
+      if (!map.has(key)) {
+        map.set(key, item);
+      }
+    }
+    return Array.from(map.values());
   }
 
   filter(): void {
     const filterValue = this.input.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.service.myStudyGroups.filter(
-      (option) =>
-        option.title.toLowerCase().includes(filterValue) ||
-        option.code.toLowerCase().includes(filterValue)
+    this.filteredOptions = Array.from(
+      new Map(
+        this.options
+          .filter(
+            (option) =>
+              option.title.toLowerCase().includes(filterValue) ||
+              option.code.toLowerCase().includes(filterValue)
+          )
+          .map((option) => [option.code, option]) // remover duplicatas pelo código
+      ).values()
     );
   }
 
   applyFilters(): void {
-    const filterValue = this.input.nativeElement.value.toLowerCase();
+    let filterValue = this.input.nativeElement.value;
+    let codeFilter: string | undefined;
+    let titleFilter: string | undefined;
 
-    // Dividir o valor do filtro em partes, se necessário
-    const [codeFilter, titleFilter] = filterValue
+    [codeFilter, titleFilter] = filterValue
       .split(' - ')
       .map((part) => part.trim());
 
-    const filter =
-      this.service.myStudyGroups?.filter(
-        (option) =>
-          this.filterByDayOfWeek(option) &&
-          this.filterByHour(option) &&
-          (option.code.toLowerCase().includes(codeFilter) ||
-            option.title.toLowerCase().includes(titleFilter))
-      ) || [];
+    // Verifica se o valor digitado existe em `options`
+    const matchExists = this.options.some(
+      (option) =>
+        option.code.includes(codeFilter) && option.title.includes(titleFilter)
+    );
 
-    this.options = [...filter];
-    this.cdr.detectChanges();
+    // Se não existir, limpa o campo e usa `undefined`
+    if (!matchExists) {
+      this.input.nativeElement.value = '';
+      codeFilter = titleFilter = undefined;
+    }
+
+    console.log('titleFilter');
+    console.log(titleFilter);
+
+    const selectedWeekdays = Array.from(this.selectedDays)
+      .map((day) => this.convertDayToNumber(day))
+      .filter((n) => n >= 0);
+
+    console.log('selectedWeekdays');
+    console.log(selectedWeekdays);
+
+    const filterDto: StudyGroupFilterDto = {
+      subjectName: titleFilter || undefined,
+      meetingTime: this.selectedHour || undefined,
+      weekdays: selectedWeekdays.length ? selectedWeekdays : undefined,
+      studentId: Number(localStorage.getItem('idUsuario')),
+    };
+
+    this.service.filterStudyGroups(filterDto).subscribe((response) => {
+      console.log('filterDto', filterDto);
+      this.service.myStudyGroups = response;
+      this.options = [...response];
+      this.filteredOptions = this.getDistinctOptions([...response]);
+      this.cdr.detectChanges();
+    });
+  }
+
+  convertDayToNumber(day: string): number {
+    const daysMap: { [key: string]: number } = {
+      dom: 1,
+      seg: 2,
+      ter: 3,
+      qua: 4,
+      qui: 5,
+      sex: 6,
+      sab: 7,
+    };
+    return daysMap[day.toLowerCase()] ?? -1;
   }
 
   clearFilters(): void {
@@ -101,35 +162,15 @@ export class MyStudyGroupComponent implements OnInit {
     this.time.nativeElement.value = '';
     this.selectedDays.clear();
     this.selectedHour = '';
-
     this.checkboxes.forEach((checkbox) => (checkbox.checked = false));
-    this.cdr.detectChanges();
 
-    this.ngOnInit();
-  }
-
-  filterByDayOfWeek(option: any): boolean {
-    if (!option.daysOfWeek || this.selectedDays.size === 0) {
-      return true; // Sem filtro de dia da semana ou dados não definidos
-    }
-    return option.daysOfWeek.some((day: string) =>
-      this.selectedDays.has(day.toLowerCase())
-    );
-  }
-
-  filterByHour(option: any): boolean {
-    if (!this.selectedHour) {
-      return true; // Sem filtro de horário
-    }
-    return option.hour >= this.selectedHour;
+    this.loadFilteredGroups(); // recarrega tudo sem filtros
   }
 
   days(day: string): void {
-    if (this.selectedDays.has(day)) {
-      this.selectedDays.delete(day);
-    } else {
-      this.selectedDays.add(day);
-    }
+    this.selectedDays.has(day)
+      ? this.selectedDays.delete(day)
+      : this.selectedDays.add(day);
   }
 
   onHourChange(event: any): void {
