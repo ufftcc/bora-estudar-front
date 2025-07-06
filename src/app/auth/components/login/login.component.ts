@@ -3,12 +3,13 @@ import { AuthService } from '../../../core/security/auth/auth.service';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SigninBody } from '../../models/signin-body';
 import { Router, RouterLink } from '@angular/router';
-import { MatButton, MatAnchor } from '@angular/material/button';
+import { MatButton, MatAnchor, MatIconButton } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatInput,
     MatButton,
     MatAnchor,
+    MatIconButton,
+    MatIcon,
+    MatSuffix,
     RouterLink,
   ],
 })
@@ -36,6 +40,7 @@ export class LoginComponent implements OnInit {
   private authService = inject(AuthService);
   protected loginForm!: FormGroup;
   protected errorMessage = '';
+  protected hidePassword = true;
   // isLoggedIn$ = this.authService.isLoggedIn();
   constructor() {}
 
@@ -54,6 +59,10 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
+  }
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
   }
 
   onSubmit(): void {
