@@ -1,16 +1,40 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+  inject,
+  Pipe,
+  PipeTransform,
+} from '@angular/core';
 import { AuthService } from './core/security/auth/auth.service';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { UserResponseBasicDto } from './shared/models/user/user-response-basic-dto';
 import { MatNavList, MatListItem } from '@angular/material/list';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import {
+  MatSidenavContainer,
+  MatSidenav,
+  MatSidenavContent,
+} from '@angular/material/sidenav';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Location } from '@angular/common'
+import { Location } from '@angular/common';
 import { NavigationServiceService } from './study-group/navigation-service.service';
+
+// Pipe implementado diretamente no mesmo arquivo
+@Pipe({
+  name: 'truncate',
+  standalone: true
+})
+export class TruncatePipe implements PipeTransform {
+  transform(value: string, limit: number = 10, trail: string = '...'): string {
+    if (!value) return '';
+    return value.length > limit ? value.substring(0, limit) + trail : value;
+  }
+}
 
 @Component({
     selector: 'app-root',
@@ -31,6 +55,7 @@ import { NavigationServiceService } from './study-group/navigation-service.servi
         MatMenu,
         MatMenuItem,
         MatMenuTrigger,
+        TruncatePipe // Adicionando o pipe aos imports
     ],
 })
 export class AppComponent implements OnInit {
@@ -63,11 +88,11 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(() => {
       this.showBackIcon = this.router.url !== '/search';
 
-      if(this.router.url === '/create'){
+      if (this.router.url === '/create') {
         this.appName = 'Criar Grupo';
-      } else if(this.router.url === '/my-study-group'){
+      } else if (this.router.url === '/my-study-group') {
         this.appName = 'Meus Grupos';
-      } else if(this.router.url.startsWith('/edit')){
+      } else if (this.router.url.startsWith('/edit')) {
         this.appName = 'Editar';
       } else if (this.router.url.startsWith('/detail')) {
         this.appName = 'Detalhes';
@@ -88,11 +113,9 @@ export class AppComponent implements OnInit {
         this.router.navigateByUrl('/login');
         this.close();
 
-        this.snackBar.open(
-          'Desconectado com sucesso!',
-          'X',
-          { duration: 2500 }
-        );
+        this.snackBar.open('Desconectado com sucesso!', 'X', {
+          duration: 2500,
+        });
       },
       error: (error) => {
         console.log(error);
@@ -127,7 +150,7 @@ export class AppComponent implements OnInit {
   //   }
   // }
 
-  close(){
+  close() {
     if (this.sidenav) {
       this.sidenav.close();
     }
