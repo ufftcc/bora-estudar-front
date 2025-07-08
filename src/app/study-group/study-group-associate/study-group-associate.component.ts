@@ -6,23 +6,16 @@ import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-study-group-associate',
   standalone: true,
-  imports: [
-    MatButton
-  ],
+  imports: [MatButton],
   templateUrl: './study-group-associate.component.html',
-  styleUrl: './study-group-associate.component.scss'
+  styleUrl: './study-group-associate.component.scss',
 })
 export class StudyGroupAssociateComponent implements OnInit {
   private encodedApiUrl = environment.encodedApiUrl;
 
-  constructor(
-    public service: StudyGroupService){}
+  constructor(public service: StudyGroupService) {}
 
-  ngOnInit(): void {
-
-
-
-  }
+  ngOnInit(): void {}
 
   associate() {
     const idUsuario = localStorage.getItem('idUsuario');
@@ -33,4 +26,8 @@ export class StudyGroupAssociateComponent implements OnInit {
     window.open(url, '_blank');
   }
 
+  joinServer() {
+    const inviteLink = 'https://discord.gg/AVDMn36jku'; // Link completo com HTTPS
+    window.open(inviteLink, '_blank');
+  }
 }

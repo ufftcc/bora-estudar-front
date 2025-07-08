@@ -86,7 +86,7 @@ export class StudyUpdateGroupComponent implements OnInit {
       description: ['', [Validators.maxLength(255)]],
       campoOculto: [''],
       subject: [''],
-      maxStudents: [''],
+      maxStudents: [{ value: '', disabled: true }], // Campo inicialmente desabilitado
       meetingTime: [''],
       modality: ['REMOTE'],
       weekdays: [[]],

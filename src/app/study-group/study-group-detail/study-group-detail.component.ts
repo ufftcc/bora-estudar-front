@@ -18,7 +18,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { interval, Subscription } from 'rxjs';
-import { switchMap, takeWhile } from 'rxjs/operators';
+import { switchMap, takeWhile, delay } from 'rxjs/operators';
 
 
 @Component({
@@ -140,7 +140,7 @@ export class StudyGroupDetailComponent implements OnInit {
       window.open(this.discordInviteUrl, '_blank', 'noopener,noreferrer');
     } else {
       this.snackBar.open('Link do Discord não disponível', 'Fechar', {
-        duration: 3000,
+        duration: 5000,
         panelClass: ['error-snackbar'],
       });
     }
@@ -148,25 +148,33 @@ export class StudyGroupDetailComponent implements OnInit {
 
   joinGroup() {
     const idUsuario = localStorage.getItem('idUsuario');
+    this.loading = true;
 
     if (idUsuario !== null) {
       const id = Number(idUsuario);
-      this.service.joinGroupService(this.studyGroup.id, id).subscribe({
-        next: (response) => {
-          this.snackBar.open('Entrou no grupo com sucesso!', 'X', {
-            duration: 2500,
-          });
+      this.service
+        .joinGroupService(this.studyGroup.id, id)
+        .pipe(
+          delay(3500) // Atraso de 3,5 segundos
+        )
+        .subscribe({
+          next: (response) => {
+            this.snackBar.open('Entrou no grupo com sucesso!', 'X', {
+              duration: 5000,
+            });
 
-          this.loading = false;
+            this.loading = false;
 
-          this.callGroup();
-        },
-        error: (error) => {
-          console.error('Erro ao entrar no grupo:', error);
-        },
-      });
+            this.callGroup();
+          },
+          error: (error) => {
+            console.error('Erro ao entrar no grupo:', error);
+            this.loading = false;
+          },
+        });
     } else {
       console.error('ID do usuário não encontrado no localStorage');
+      this.loading = false;
     }
   }
 
@@ -176,23 +184,30 @@ export class StudyGroupDetailComponent implements OnInit {
 
     if (idUsuario !== null) {
       const id = Number(idUsuario);
-      this.service.leaveGroupService(this.studyGroup.id, id).subscribe({
-        next: (resposta) => {
-          this.snackBar.open('Saiu do grupo com sucesso!', 'X', {
-            duration: 5000,
-          });
-          this.loading = false;
-
-          this.callGroup();
-        },
-        error: (error) => {
-          console.error('Erro ao sair do grupo:', error);
-          this.loading = false;
-          this.snackBar.open('Erro ao sair do grupo!', '', { duration: 5000 });
-        },
-      });
+      this.service
+        .leaveGroupService(this.studyGroup.id, id)
+        .pipe(
+          delay(3500) // Atraso de 5 segundos
+        )
+        .subscribe({
+          next: (resposta) => {
+            this.snackBar.open('Saiu do grupo com sucesso!', 'X', {
+              duration: 5000,
+            });
+            this.loading = false;
+            this.callGroup();
+          },
+          error: (error) => {
+            console.error('Erro ao sair do grupo:', error);
+            this.loading = false;
+            this.snackBar.open('Erro ao sair do grupo!', '', {
+              duration: 5000,
+            });
+          },
+        });
     } else {
       console.error('ID do usuário não encontrado no localStorage');
+      this.loading = false;
     }
   }
 
